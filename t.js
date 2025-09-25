@@ -23,6 +23,10 @@ const VUtils = {
   std2orthobase: function(b1, b2, alpha){
     return createVector( b1.dot(alpha), b2.dot(alpha) )
   },
+  rotate: function(u, beta) {
+    return VUtils.linear( [ createVector(cos(beta), sin(beta)), createVector(-sin(beta), cos(beta)) ],
+ [u.x, u.y] )
+  }
   
 }
 
@@ -47,6 +51,5 @@ class Transform2d{
   }
   
   rotate(beta){
-    
   }
 }
