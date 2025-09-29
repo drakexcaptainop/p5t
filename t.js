@@ -6,37 +6,6 @@ const GLOBALS = {
     DefaultMaxAbsVelocity: 4
 }
 
-var ell 
-function setup() {
-    createCanvas(400, 400);
-    ell = new Ell( createVector( width/2, height/2 ) )
-}
-
-function draw() {
-    background(220);
-    ell.draw()
-    ell.drawBase()
-    ell.update() 
-}
-
-function keyPressed(){
-    switch (key) {
-        case 'w':
-            ell.rigidBody.addForce( createVector( 0, 2 ) )
-            break;
-        case 's':
-            ell.rigidBody.addForce( createVector( 0, -2 ) )
-            break;
-        case 'd':
-            ell.transform.rotate( PI/10 )
-            break;
-        case 'a':
-            ell.transform.rotate( -PI/10 )
-            break;
-        default:
-            break;
-    }
-}
 
 const VUtils = {
     ortho2: function ( u ) {
@@ -147,7 +116,6 @@ class Transform2d{
     computeRot(){
         this.zrot = this.right.heading()
     }
-    
     base2Std(u){
         return VUtils.base2std( this.right, this.fwd, u )
     }
@@ -168,5 +136,15 @@ class Transform2d{
     rotate(beta){
         this.computeBase( VUtils.rotate( this.fwd, beta ) )
         this.computeRot()
+    }
+
+    transformStd2Base(P, onOrigin){
+        let q = onOrigin ? P : p5.Vector.sub( P, this.transform.pos )
+        return VUtils.std2orthobase( this.transform.right, this.transform.fwd, q)
+    }
+
+    transformBase2Std( P, getStdOrigin ){
+        let q = VUtils.base2std( this.right, this.fwd, P )
+        return getStdOrigin ? q.add( this.pos ) : q
     }
 }
