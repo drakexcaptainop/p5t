@@ -66,8 +66,12 @@ class BB extends BoundingPrimitive{
         this.heightd2 = height/2
     }
 
-    checkHit(){
-
+    checkHit(ray){
+        let rayB = this.transformRay2Base( ray )
+        let [Px, Py] = rayB.intersectCurrentStdBase(  )
+        let onXBound = Px.x < this.widthd2 && Px.x > -this.widthd2
+        let onYBound = Py.y < this.heightd2 && Py.y > -this.heightd2
+        return [onXBound && onYBound, this.getClosest( createVector( Px.x, Py.y ) )]
     }
     
     getClosest(P){
