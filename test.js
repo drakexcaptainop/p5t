@@ -14,12 +14,10 @@ function draw() {
   bb.draw()
   let [hasHit, P] = bb.checkHit( ray )
   if(hasHit){
-    DEBUG.beginDebug()
     DEBUG.debug( () => {
         fill(0, 0, 255)
         DEBUG.vectorEllipse( P )
     } )
-    DEBUG.endDebug()
   }
   
 }

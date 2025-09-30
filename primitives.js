@@ -1,5 +1,6 @@
 const DEBUG = {
     Debug: true,
+    EllipseSize: 10,
     beginDebug(){
         if(this.Debug) push()
     },
@@ -7,16 +8,19 @@ const DEBUG = {
         if(this.Debug) pop()
     },
     debug(f, ctx){
+        if(!this.Debug) return
+        this.beginDebug()
         if(ctx){ f = f.bind(ctx) }
         f()
+        this.endDebug()
     },
     vectorEllipse( vec ) {
-        ellipse( vec.x, vec.y, 40 )
+        ellipse( vec.x, vec.y, this.EllipseSize )
     } 
 }
 const PRIMITIVE_GLOBALS = {
     Eps: 1e-6 ,
-        
+    
 }
 
 
@@ -136,7 +140,7 @@ class BB extends BoundingPrimitive{
         let [Px, Py] = rayB.intersectCurrentStdBase(  )
         
         let [hasHit, P] = this.slabTest( rayB )
-        DEBUG.beginDebug()
+
         DEBUG.debug( 
             (function() {
                 fill (255, 0, 0)
@@ -145,7 +149,6 @@ class BB extends BoundingPrimitive{
                 DEBUG.vectorEllipse( this.transform.transformBase2Std( Py, true ) )
             }), this
         )
-        DEBUG.endDebug()
 
         
         return [hasHit, P]
