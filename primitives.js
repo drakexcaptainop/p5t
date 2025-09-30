@@ -40,8 +40,16 @@ class Ray{
     // t= ( x0-r0 )'*w / rd' * w
 
     intersectPlane( w, x0 ){
-        let t = p5.Vector.sub( x0, this.r0 ).dot( w ) / ( this.rd.dot( w ) )
+        let t = this.intersectPlaneComponent( w, x0 )
         return this.eval( t )
+    }
+
+    intersectPlaneComponent(w, x0){
+        return p5.Vector.sub( x0, this.r0 ).dot( w ) / ( this.rd.dot( w ) )
+    }
+    intersectPlaneComponentBounded(w, x0){
+        let t = this.intersectPlaneComponent( w, x0 )
+        return t < 0 ? Infinity : t
     }
 
     intersectCurrentStdBase(  ){
@@ -102,7 +110,30 @@ class BB extends BoundingPrimitive{
     get rightCorner (){
         return createVector( this.widthd2, this.heightd2 ).add( this.transform.pos )
     }
+    /**
+     * 
+     * @param {Ray} ray 
+     */
+    slabTest2(ray){
+        // horizontalllllllll 
+        // h1
+        let t1h = ray.intersectPlaneComponent( createVector( 0, 1 ), createVector(0, this.heightd2 ) )
+        let t2h = ray.intersectPlaneComponent( createVector( 0, 1 ), createVector( 0, -this.heightd2 ) )
 
+        //vert
+        let t1v = ray.intersectPlaneComponent( createVector(1, 0), createVector(this.widthd2,0 ) )
+        let t2v = ray.intersectPlaneComponent( createVector(1, 0), createVector( -this.widthd2, 0) )
+        let mnth = Math.min( t1h, t2h )
+        let mntv = Math.min( t1v, t2v )
+
+        let mxth = Math.max( t1h, t2h )
+        let mxtv = Math.max( t1v, t2v )
+
+        let te = Math.max( mnth, mntv )
+        let tl = Math.min( mxth, mxtv )
+
+        return [te > 0 && te < tl, this.transform.transformBase2Std( ray.eval( te ), true )]
+    }
     slabTest(ray){
         /**
          * 
@@ -139,7 +170,7 @@ class BB extends BoundingPrimitive{
         let rayB = this.transformRay2Base( ray )
         let [Px, Py] = rayB.intersectCurrentStdBase(  )
         
-        let [hasHit, P] = this.slabTest( rayB )
+        let [hasHit, P] = this.slabTest2( rayB )
 
         DEBUG.debug( 
             (function() {
