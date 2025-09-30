@@ -139,12 +139,12 @@ class Transform2d{
     }
 
     transformStd2Base(P, onOrigin){
-        let q = onOrigin ? P : p5.Vector.sub( P, this.transform.pos )
-        return VUtils.std2orthobase( this.transform.right, this.transform.fwd, q)
+        let q = onOrigin ? P : p5.Vector.sub( P, this.pos )
+        return VUtils.std2orthobase( this.right, this.fwd, q)
     }
 
-    transformBase2Std( P, getStdOrigin ){
+    transformBase2Std( P, useStdOrigin ){
         let q = VUtils.base2std( this.right, this.fwd, P )
-        return getStdOrigin ? q.add( this.pos ) : q
+        return useStdOrigin ? q.add( this.pos ) : q
     }
 }
