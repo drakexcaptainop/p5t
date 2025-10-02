@@ -14,9 +14,16 @@ const DEBUG = {
         f()
         this.endDebug()
     },
-    vectorEllipse( vec ) {
-        ellipse( vec.x, vec.y, this.EllipseSize )
-    } 
+    vectorEllipse( vec, size ) {
+        ellipse( vec.x, vec.y, size || this.EllipseSize )
+    },
+    segment( p1, p2, boundPoints ){
+        line ( p1.x, p1.y, p2.x, p2.y )
+        if(boundPoints){
+            ellipse( p1.x, p1.y, this.EllipseSize )
+            ellipse( p2.x, p2.y, this.EllipseSize )
+        }
+    }
 }
 const PRIMITIVE_GLOBALS = {
     Eps: 1e-6 ,
@@ -57,10 +64,15 @@ class Ray{
         let Py = this.intersectPlane( createVector( 1, 0 ), createVector(  ) )
         return [ Px, Py ]
     } 
-    draw(){
-        ellipse( this.r0.x, this.r0.y, 40 )
-        let rT = this.eval( 100 )
+    draw(t){
+        ellipse( this.r0.x, this.r0.y, 20 )
+        let rT = this.eval( t || 100 )
         line ( this.r0.x, this.r0.y, rT.x, rT.y )
+    }
+
+    lookAt( P ){
+        this.rd = p5.Vector.sub( P, this.r0 ).normalize()
+        return this
     }
 }
 
@@ -121,6 +133,7 @@ class BB extends BoundingPrimitive{
         let t2h = ray.intersectPlaneComponent( createVector( 0, 1 ), createVector( 0, -this.heightd2 ) )
 
         //vert
+        
         let t1v = ray.intersectPlaneComponent( createVector(1, 0), createVector(this.widthd2,0 ) )
         let t2v = ray.intersectPlaneComponent( createVector(1, 0), createVector( -this.widthd2, 0) )
         let mnth = Math.min( t1h, t2h )
@@ -166,7 +179,6 @@ class BB extends BoundingPrimitive{
         return [texit >= Math.max( 0, tenter), this.transform.transformBase2Std(ray.eval( tenter ), true)]
     }
     checkHit(ray){
-        ray.draw()
         let rayB = this.transformRay2Base( ray )
         let [Px, Py] = rayB.intersectCurrentStdBase(  )
         
@@ -201,5 +213,22 @@ class BB extends BoundingPrimitive{
         let corner = this.corner
         rect( corner.x, corner.y, this.width, this.height)
     }
+    drawInTransform(){
+        push ()
+        translate (this.transform.pos)
+        rotate (this.transform.zrot)
+        translate (p5.Vector.mult(this.transform.pos, -1))
+        this.draw ()
+        pop ()
+    }
+}
 
+class Rect extends GObject{
+  constructor(p, w, h){
+    super(p)
+    this.bb = new BB( this.transform, w, h )
+  }
+  draw(){
+    this.bb.draw()
+  }
 }

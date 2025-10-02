@@ -38,6 +38,15 @@ class GObject{
         this.transform = new Transform2d( pos )
         this.rigidBody =  new RigidBody( this )
     }
+    drawInTransform(){
+        push ()
+        translate (this.transform.pos)
+        rotate (this.transform.zrot)
+        translate (p5.Vector.mult(this.transform.pos, -1))
+        this.draw ()
+        pop ()
+    }
+
     draw(){  }
     drawBase(t){
         t = t || GLOBALS.DefaultBaseDrawMag
