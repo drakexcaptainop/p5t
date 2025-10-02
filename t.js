@@ -71,11 +71,12 @@ class GObject{
 }
 
 class Ell extends GObject{
-    constructor( pos ) {
+    constructor( pos, size ) {
         super( pos )
+        this.size = size || GLOBALS.DefaultGOSize
     }
     draw(){
-        ellipse(this.transform.pos.x, this.transform.pos.y, GLOBALS.DefaultGOSize)
+        ellipse(this.transform.pos.x, this.transform.pos.y, this.size)
     }
 }
 

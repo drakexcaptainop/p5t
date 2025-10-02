@@ -9,7 +9,6 @@ function setup() {
   new Rect( createVector( width *.2, height*.8 ), 50, 50 ),
   new Rect( createVector( width * .8, height * .1 ), 50, 50 ))
   origin = createVector(  )
-  
 }
 
 N =1000
