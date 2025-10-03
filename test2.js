@@ -43,7 +43,6 @@ class Barrel extends GObject{
         this.next = 1
         this.target = 0
         this.targetAngle = 0
-
         this.bulletIndex = 4
     }
     stepState(){
@@ -63,12 +62,11 @@ class Barrel extends GObject{
         for(let i=0; i<this.N; i++){
             let pos = createVector( cos( i * this.rotStep + this.rot ),
             sin(i * this.rotStep + this.rot) ).mult(this.rad * .5).add( this.transform.pos )
-
             if(i==this.bulletIndex) fill (255, 0, 0)
             else fill (255,0,0)
             DEBUG.vectorEllipse( pos, this.diam / this.N )
         }
-        
+
     }
     step(  ){
 
