@@ -1,96 +1,3 @@
-class Matrix{
-    static linearCombination(B, u){
-        let z = new Vector( 0, 0, 0 )
-        for(let i=0; i<vecs.length; i++){
-            z.add( p5.Vector.mult( B[i], u[i] ) )
-        }
-        return z
-    }
-    static customVectorBaseToStandardBase( B, u ){
-        if( u instanceof Vector ) u = u.asArray(  )
-        return Matrix.linearCombination( B, u )
-    }
-
-    static standardVectorBaseToOrthogonalBase( B, u ){
-        if( u instanceof Array ) u = u.asArray( )
-        let Bt = Matrix.baseTranspose( B )
-        return this.linearCombination( Bt, u )        
-    }
-    static baseInverse(B){
-        let [L, I] = Matrix.lowerTriangularReduction( B )
-        let [_, Bi] = Matrix.upperTriangularReduction( L, I )
-        return Bi
-    }
-    static upperTriangularReduction(B, I){
-        let rows = B.length
-        let cols = B[0].length
-        let Bc = Matrix.copy( B )
-        if(rows != cols) throw new Error( "Invalid" )
-        I = I || Matrix.eye( rows )
-        for( let j=0; j<cols;j++ ){
-            for(let i=0; i<j; i++){
-                if(i == j){
-                    let cst = Bc[i][i]
-                    I[i] = Vector.arrayDiv( I[i], cst )
-                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
-                }else{
-                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
-                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
-                }
-            }
-        }
-        return [Bc, I]
-    }
-
- 
-    static lowerTriangularReduction(B, I){
-        let rows = B.length
-        let cols = B[0].length
-        let Bc = Matrix.copy( B )
-        if(rows != cols) throw new Error( "Invalid" )
-        I= I || Matrix.eye( rows )
-        for( let j=0; j<cols;j++ ){
-            for(let i=j; i<rows; i++){
-                if(i == j){
-                    let cst = Bc[i][i]
-                    I[i] = Vector.arrayDiv( I[i], cst )
-                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
-                 }else{
-                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
-                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
-                }
-            }
-        }
-        return [Bc, I]
-    }
-
-    static copy(B){
-        return  new Array( B.length ).fill(0).map( (_, i) => {
-            return new Array( B[0].length ).fill(0).map( (_, j) => {
-                return B[i][j]
-            } )
-        } )
-    }
-
-    static eye(N){
-        let B = new Array( N ).fill( 0 ).map( (_, i) => {
-            let bt = new Array( N ).fill( 0 )
-            bt[i] = 1 
-            return bt
-        } )
-        return B
-    }
-
-    static baseTranspose( B ){
-        Bt = new Array(B[0].length).map( _ => new Array( B.length ).fill(0) )
-        for(let j=0; j<B[0].length; j++){
-            for(let i=0; i<B.length; i++){
-                Bt[j][i] = B[i][j]
-            }
-        }
-        return Bt
-    }
-}
 class Vector{
     constructor(x, y, z){
         this.x = x 
@@ -136,11 +43,11 @@ class Vector{
         return Math.sqrt( this.dot(  ) )
     }
 
-    get orthogonal(){
+    get orthogonal2d(){
         return new Vector( -this.y, this.x )
     }
     get normalized(){
-        return this.copy().mult( this.magnitude )
+        return this.copy().div( this.magnitude )
     }
     static arrayMult(arr, t){
         return arr.map( v => v * t )
@@ -156,7 +63,151 @@ class Vector{
     static arrayDiv(arr, t){
         return Vector.arrayMult( arr, 1/t )
     }
+
+    static arrayDot(arr1, arr2){
+        return arr1.reduce( (pr, cr, i) => pr + cr * arr2[i] )
+    }
 }
+class Matrix{
+    static linearCombination(B, u){
+        let z = new Vector( 0, 0, 0 )
+        for(let i=0; i<vecs.length; i++){
+            z.add( p5.Vector.mult( B[i], u[i] ) )
+        }
+        return z
+    }
+    static customVectorBaseToStandardBase( B, u ){
+        if( u instanceof Vector ) u = u.asArray(  )
+        return Matrix.linearCombination( B, u )
+    }
+
+    static standardVectorBaseToOrthogonalBase( B, u ){
+        if( u instanceof Array ) u = u.asArray( )
+        let Bt = Matrix.baseTranspose( B )
+        return Matrix.linearCombination( Bt, u )        
+    }
+    static baseInverse(B){
+        let [L, I] = Matrix.lowerTriangularReduction( B )
+        let [_, Bi] = Matrix.upperTriangularReduction( L, I )
+        return Bi
+    }
+    static upperTriangularReduction(B, I){
+        let [rows, cols] = Matrix.shape( B )
+        let Bc = Matrix.copy( B )
+        if(rows != cols) throw new Error( "Invalid" )
+        I = I || Matrix.eye( rows )
+        for( let j=0; j<cols;j++ ){
+            for(let i=0; i<j; i++){
+                if(i == j){
+                    let cst = Bc[i][i]
+                    I[i] = Vector.arrayDiv( I[i], cst )
+                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
+                }else{
+                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
+                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
+                }
+            }
+        }
+        return [Bc, I]
+    }
+    static lowerTriangularReduction(B, I){
+        let rows = B.length
+        let cols = B[0].length
+        let Bc = Matrix.copy( B )
+        if(rows != cols) throw new Error( "Invalid" )
+        I= I || Matrix.eye( rows )
+        for( let j=0; j<cols;j++ ){
+            for(let i=j; i<rows; i++){
+                if(i == j){
+                    let cst = Bc[i][i]
+                    I[i] = Vector.arrayDiv( I[i], cst )
+                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
+                 }else{
+                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
+                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
+                }
+            }
+        }
+        return [Bc, I]
+    }
+    
+
+    static shape( B ){
+        return [B.length, B[0].length]
+    }
+
+    static zerosMatrix( N, M ){
+        return new Array( N ).fill(0).map( _ => new Array( M ).fill(0) )
+    }
+    static baseInverse2d(B){
+        let det = B[0][0] * B[1][1] - B[0][1] * B[1][0]
+        return Matrix.mult( [
+            [B[1][1], -B[0][1]],
+            [-B[1][0], B[0][0]]
+        ], 1/det )
+    }
+    
+
+    static copy(B){
+        return  new Array( B.length ).fill(0).map( (_, i) => {
+            return new Array( B[0].length ).fill(0).map( (_, j) => {
+                return B[i][j]
+            } )
+        } )
+    }
+
+    static eye(N){
+        let B = new Array( N ).fill( 0 ).map( (_, i) => {
+            let bt = new Array( N ).fill( 0 )
+            bt[i] = 1 
+            return bt
+        } )
+        return B
+    }
+
+    static baseTranspose( B ){
+        Bt = new Array(B[0].length).map( _ => new Array( B.length ).fill(0) )
+        for(let j=0; j<B[0].length; j++){
+            for(let i=0; i<B.length; i++){
+                Bt[j][i] = B[i][j]
+            }
+        }
+        return Bt
+    }
+    static  matMult(){
+
+    }
+    static mult(B, t){
+        let [rows, cols] = Matrix.shape( B )
+        let H = Matrix.zerosMatrix(  rows, cols )
+        return H.map( row => row.map( Bij => Bij * t ) )
+    }
+    static add(){
+
+    }
+    static sub(){
+
+    }
+}
+
+class MatrixDecomposition{
+    static QR(){
+
+    }
+    static LU(){
+
+    }
+    static NNMF(){
+
+    }
+    static EIG(){
+
+    }
+    static SVD(){
+        
+    }
+}
+
 
 `
 

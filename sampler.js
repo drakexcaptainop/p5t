@@ -25,6 +25,8 @@ const PROBABILITY_UTILS = {
 
 }
 
+
+
 class HMM{
     constructor(transitionMatrix, emmisionMatrix){
         // TRS[i, j] = p( Z_t = j | Z_{t-1} = i )
@@ -77,4 +79,9 @@ class HMM{
         }
         return [observablePath, latentPath]
     }
+}
+
+
+class ClassicalDistributions{
+    
 }
