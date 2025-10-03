@@ -1,4 +1,4 @@
-class Transformation{
+class Matrix{
     static linearCombination(B, u){
         let z = new Vector( 0, 0, 0 )
         for(let i=0; i<vecs.length; i++){
@@ -8,50 +8,70 @@ class Transformation{
     }
     static customVectorBaseToStandardBase( B, u ){
         if( u instanceof Vector ) u = u.asArray(  )
-        return Transformation.linearCombination( B, u )
+        return Matrix.linearCombination( B, u )
     }
 
     static standardVectorBaseToOrthogonalBase( B, u ){
         if( u instanceof Array ) u = u.asArray( )
-        let Bt = Transformation.baseTranspose( B )
+        let Bt = Matrix.baseTranspose( B )
         return this.linearCombination( Bt, u )        
     }
     static baseInverse(B){
-        
+        let [L, I] = Matrix.lowerTriangularReduction( B )
+        let [_, Bi] = Matrix.upperTriangularReduction( L, I )
+        return Bi
     }
-    static upperTriangularReduction(B){
+    static upperTriangularReduction(B, I){
         let rows = B.length
         let cols = B[0].length
+        let Bc = Matrix.copy( B )
         if(rows != cols) throw new Error( "Invalid" )
-        let I = Transformation.eye( rows )
-        
+        I = I || Matrix.eye( rows )
+        for( let j=0; j<cols;j++ ){
+            for(let i=0; i<j; i++){
+                if(i == j){
+                    let cst = Bc[i][i]
+                    I[i] = Vector.arrayDiv( I[i], cst )
+                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
+                }else{
+                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
+                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
+                }
+            }
+        }
+        return [Bc, I]
+    }
+
+ 
+    static lowerTriangularReduction(B, I){
+        let rows = B.length
+        let cols = B[0].length
+        let Bc = Matrix.copy( B )
+        if(rows != cols) throw new Error( "Invalid" )
+        I= I || Matrix.eye( rows )
+        for( let j=0; j<cols;j++ ){
+            for(let i=j; i<rows; i++){
+                if(i == j){
+                    let cst = Bc[i][i]
+                    I[i] = Vector.arrayDiv( I[i], cst )
+                    Bc[i] = Vector.arrayDiv( Bc[i], cst )
+                 }else{
+                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], Bc[i][j] ) )
+                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
+                }
+            }
+        }
+        return [Bc, I]
     }
 
     static copy(B){
         return  new Array( B.length ).fill(0).map( (_, i) => {
-            return new Array( B[0].length ).map( (_, j) => {
+            return new Array( B[0].length ).fill(0).map( (_, j) => {
                 return B[i][j]
             } )
         } )
     }
-    static lowerTriangularReduction(B){
-        let rows = B.length
-        let cols = B[0].length
-        let Bc = Transformation.copy( B )
-        if(rows != cols) throw new Error( "Invalid" )
-        let I = Transformation.eye( rows )
-        for( let j=0; j<cols;j++ ){
-            for(let i=j; i<rows; i++){
-                if(i == j){
-                    I[i] = Vector.arrayDiv( I[i], I[i][i] )
-                    Bc[i] = Vector.arrayDiv( Bc[i], Bc[i][i] )
-                }else{
-                    Bc[i] = Vector.arraySub( Bc[i], Vector.arrayMult( Bc[j], Bc[i][j] ) )
-                    I[i] = Vector.arraySub( I[i], Vector.arrayMult( I[j], I[i][j] ) )
-                }
-            }
-        }
-    }
+
     static eye(N){
         let B = new Array( N ).fill( 0 ).map( (_, i) => {
             let bt = new Array( N ).fill( 0 )

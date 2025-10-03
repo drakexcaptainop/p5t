@@ -18,6 +18,7 @@ function draw(){
     stroke(0)
     barrel.draw()
     barrel.update()
+    noLoop()
 }
 
 function mousePressed(){
