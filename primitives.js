@@ -45,7 +45,9 @@ class Ray{
     // r0' * w + rd ' * w * t = -b
     // t = -(b + r0'* w) / rd' * w
     // t= ( x0-r0 )'*w / rd' * w
-
+    vectorTo( u ){
+        return p5.Vector.sub( u, this.r0 )
+    }
     intersectPlane( w, x0 ){
         let t = this.intersectPlaneComponent( w, x0 )
         return this.eval( t )
@@ -64,6 +66,39 @@ class Ray{
         let Py = this.intersectPlane( createVector( 1, 0 ), createVector(  ) )
         return [ Px, Py ]
     } 
+    getSphereComponentDiscriminant(center, radius){
+        center = createVector( center.x, center.y, center.z )
+        let oc = p5.Vector.sub( this.r0, center )
+ 
+        let b = 2 * this.rd.dot( oc )
+        let c = oc.dot( oc ) - radius * radius
+        
+        return b * b - 4 * a * c
+    }
+    intersectSphereComponent(center, radius){
+        let disc = this.getSphereComponentDiscriminant( center, radius )
+        if( disc < 0 ) {
+            return Infinity
+        }
+        let sqrtDisc = Math.sqrt( disc )
+        let denom = 2 * a
+        let t0 = (-b - sqrtDisc) / denom
+        let t1 = (-b + sqrtDisc) / denom
+        if( t0 > t1 ) {
+            [t0, t1] = [t1, t0]
+        }
+        let eps = PRIMITIVE_GLOBALS.Eps
+        let tclosest = Infinity
+        if( t0 >= eps ){
+            tclosest = t0
+        }else if( t1 >= eps ){
+            tclosest = t1
+        }
+        return tclosest
+    }
+    intersectSphere( center, radius ){
+        return this.eval( this.intersectSphereComponent( center, radius ) )
+    }
     draw(t){
         ellipse( this.r0.x, this.r0.y, 20 )
         let rT = this.eval( t || 100 )
@@ -101,7 +136,40 @@ class BoundingPrimitive{
             this.transform.transformBase2Std( ray.rd, false ) )
     }
 
- 
+    checkHit(){
+
+    }
+    getClosest(){
+
+    }
+}
+
+class BSpherical extends BoundingPrimitive{
+    /**
+     * 
+     * @param {Number} radius 
+     * @param {Transform2d} transformParent 
+     */
+    constructor( radius, transformParent ){
+        super( transformParent )
+        this.rad = radius
+    }
+    /**
+     * 
+     * @param {Ray} ray 
+     */
+    checkHit(ray){
+        let t = ray.intersectSphereComponent( this.transform.pos, this.rad )
+        let hasHit = t != Infinity && t > 0
+        let P = ray.eval( t )
+        return [hasHit, P]
+    }
+    getClosest( P ){
+        let dV = p5.Vector.sub( P, this.transform.pos )
+        let t = dV.mag() - this.rad
+        let P = dV.normalize().mult( t )
+        return P    
+    }
 }
 
 class BB extends BoundingPrimitive{
@@ -221,14 +289,4 @@ class BB extends BoundingPrimitive{
         this.draw ()
         pop ()
     }
-}
-
-class Rect extends GObject{
-  constructor(p, w, h){
-    super(p)
-    this.bb = new BB( this.transform, w, h )
-  }
-  draw(){
-    this.bb.draw()
-  }
 }

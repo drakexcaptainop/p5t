@@ -1,4 +1,34 @@
 const PROBABILITY_UTILS = {
+    kissState: {
+        x: 123456789,
+        y: 362436000,
+        z: 521288629,
+        c: 7654321
+    },
+    setKissSeed(seed){
+        let base = seed >>> 0
+        PROBABILITY_UTILS.kissState = {
+            x: base || 123456789,
+            y: (base ^ 0xdeadbeef) >>> 0 || 362436000,
+            z: (base + 0x1234567) >>> 0 || 521288629,
+            c: (base ^ 0xabcdef) >>> 0 || 7654321
+        }
+        return PROBABILITY_UTILS
+    },
+    kissUniform(){
+        let { x, y, z, c } = PROBABILITY_UTILS.kissState
+        x = (69069 * x + 12345) >>> 0
+        y ^= y << 13
+        y ^= y >>> 17
+        y ^= y << 5
+        let t = (698769069 * z + c) >>> 0
+        let carry = ((698769069 * z + c) / 0x100000000) >>> 0
+        z = t >>> 0
+        c = carry
+        PROBABILITY_UTILS._kissState = { x, y, z, c }
+        let result = (x + y + z) >>> 0
+        return result / 0x100000000
+    },
     discreteSample(p){
         let u = Math.random( )
         let cdf = 0
@@ -83,5 +113,22 @@ class HMM{
 
 
 class ClassicalDistributions{
-    
+    static sampleStandardNormal(u, sigma){
+        u = u || 0
+        sigma = sigma || 1
+
+        let u1 = 0
+        let u2 = 0
+
+        while(u1 === 0){
+            u1 = PROBABILITY_UTILS.kissUniform()
+        }
+        while(u2 === 0){
+            u2 = PROBABILITY_UTILS.kissUniform()
+        }
+        let radius = Math.sqrt(-2 * Math.log(u1))
+        let theta = 2 * Math.PI * u2
+        let z = radius * Math.cos(theta)
+        return z * sigma + u
+    }
 }

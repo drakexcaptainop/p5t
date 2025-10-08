@@ -67,6 +67,9 @@ class Vector{
     static arrayDot(arr1, arr2){
         return arr1.reduce( (pr, cr, i) => pr + cr * arr2[i] )
     }
+    static arrayNorm(arr1, arr2){
+        return Math.sqrt( Vector.arrayDot( arr1, arr2 ) )
+    }
 }
 class Matrix{
     static linearCombination(B, u){
@@ -174,25 +177,95 @@ class Matrix{
         }
         return Bt
     }
-    static  matMult(){
-
+    static column(B, j){
+        return B.map(row => row[j])
+    }
+    static setColumn(B, j, column){
+        for(let i = 0; i < B.length; i++){
+            B[i][j] = column[i]
+        }
+        return B
+    }
+    static  matMult(A, B){
+        const [aRows, aCols] = Matrix.shape(A)
+        const [bRows, bCols] = Matrix.shape(B)
+        if (aCols !== bRows) {
+            throw new Error("Incompatible shapes for multiplication")
+        }
+        const result = Matrix.zerosMatrix(aRows, bCols)
+        for (let i = 0; i < aRows; i++) {
+            for (let k = 0; k < aCols; k++) {
+                const aik = A[i][k]
+                for (let j = 0; j < bCols; j++) {
+                    result[i][j] += aik * B[k][j]
+                }
+            }
+        }
+        return result
     }
     static mult(B, t){
         let [rows, cols] = Matrix.shape( B )
         let H = Matrix.zerosMatrix(  rows, cols )
         return H.map( row => row.map( Bij => Bij * t ) )
     }
-    static add(){
-
+    static add(A, B){
+        const [aRows, aCols] = Matrix.shape(A)
+        const [bRows, bCols] = Matrix.shape(B)
+        if (aRows !== bRows || aCols !== bCols) {
+            throw new Error("Incompatible shapes for addition")
+        }
+        return A.map((row, i) => row.map((value, j) => value + B[i][j]))
     }
-    static sub(){
-
+    static sub(A, B){
+        const [aRows, aCols] = Matrix.shape(A)
+        const [bRows, bCols] = Matrix.shape(B)
+        if (aRows !== bRows || aCols !== bCols) {
+            throw new Error("Incompatible shapes for subtraction")
+        }
+        return A.map((row, i) => row.map((value, j) => value - B[i][j]))
     }
 }
 
 class MatrixDecomposition{
-    static QR(){
 
+    static gramSchmidt(A){
+        let mat = Matrix.copy(A)
+        let [rows, cols] = Matrix.shape(mat)
+        let Q = Matrix.zerosMatrix(rows, cols)
+        for(let j = 0; j < cols; j++){
+            let v = Matrix.column(mat, j)
+            for(let i = 0; i < j; i++){
+                let q = Matrix.column(Q, i)
+                let projection = Vector.arrayMult(q, Vector.arrayDot(q, v))
+                v = Vector.arraySub(v, projection)
+            }
+            let rjj = Vector.arrayNorm(v)
+            if(rjj > Number.EPSILON){
+                let normalized = Vector.arrayMult(v, 1 / rjj)
+                Matrix.setColumn(Q, j, normalized)
+            }else{
+                Matrix.setColumn(Q, j, new Array(rows).fill(0))
+            }
+        }
+        return Q
+    }
+    static upperTriangularFromQ(A, Q){
+        const [, cols] = Matrix.shape(A)
+        const R = Matrix.zerosMatrix(cols, cols)
+        for(let i = 0; i < cols; i++){
+            const qi = Matrix.column(Q, i)
+            for(let j = i; j < cols; j++){
+                const aj = Matrix.column(A, j)
+                R[i][j] = Vector.arrayDot(qi, aj)
+            }
+        }
+        return R
+    }
+
+    static QR(A){
+        const Q = MatrixDecomposition.gramSchmidt(A)
+        const R = MatrixDecomposition.upperTriangularFromQ(A, Q)
+        return [Q, R]
     }
     static LU(){
 
