@@ -137,7 +137,7 @@ class BoundingPrimitive{
     }
 
     checkHit(){
-
+        
     }
     getClosest(){
 
