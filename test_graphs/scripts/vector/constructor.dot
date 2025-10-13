@@ -1,0 +1,5 @@
+digraph G {
+    A [label="input x,y,z"]
+    B [label="set this.x=x\nthis.y=y\nthis.z=z"]
+    A -> B -> End;
+}

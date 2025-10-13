@@ -1,0 +1,4 @@
+digraph G {
+    B [label="Array[ this.x, this.y, this.z ]"]
+    B -> End
+}

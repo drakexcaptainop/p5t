@@ -1,0 +1,11 @@
+digraph G {
+    B [label="input u: Vector"]
+    C [label="this.x+=u.x\nthis.y+=this.x"]
+    IF [label="if u == null"]
+    E [label="u = this"]
+    RET [label="return this.x*u.x+\nthis.y*u.y+\nthis.z*u.z"]
+    B -> C -> IF 
+    IF -> E [label="true"] 
+    E -> RET
+    IF -> RET [label="false"]
+}

@@ -50,7 +50,7 @@ class Vector{
         return this.copy().div( this.magnitude )
     }
     static arrayMult(arr, t){
-        let result = new Array( arr.length )
+        let result = new Array( arr.length ).fill(0)
         for ( let i = 0; i < arr.length; i++ ){
             result[i] = arr[i] * t
         }
@@ -58,7 +58,7 @@ class Vector{
     }
     static arrayAdd(arr, t){
         let iscalar = t instanceof Number
-        let result = new Array( arr.length )
+        let result = new Array( arr.length ).fill(0)
         for ( let i = 0; i < arr.length; i++ ){
             let addend = iscalar ? t : t[i]
             result[i] = arr[i] + addend
@@ -67,10 +67,10 @@ class Vector{
     }
     static arraySub(arr, t){
         let isscalar = t instanceof Number
-        let result = new Array( arr.length )
+        let result = new Array( arr.length ).fill(0)
         for ( let i = 0; i < arr.length; i++ ){
-            let subtrahend = isscalar ? t : t[i]
-            result[i] = arr[i] - subtrahend
+            let subt = isscalar ? t : t[i]
+            result[i] = arr[i] - subt
         }
         return result
     }
@@ -92,8 +92,9 @@ class Vector{
 class Matrix{
     static linearCombination(B, u){
         let z = new Vector( 0, 0, 0 )
-        for(let i=0; i<vecs.length; i++){
-            z.add( p5.Vector.mult( B[i], u[i] ) )
+        let Bt = Matrix.baseTranspose( B )
+        for(let i=0; i<B[0].length; i++){
+            z.add( p5.Vector.mult( Bt[i], u[i] ) )
         }
         return z
     }
@@ -170,24 +171,25 @@ class Matrix{
     
 
     static copy(B){
-        return  new Array( B.length ).fill(0).map( (_, i) => {
-            return new Array( B[0].length ).fill(0).map( (_, j) => {
-                return B[i][j]
-            } )
-        } )
+        let Bc = new Array( B.length ).fill( 0 )
+        for(let i=0; i<B.length[0]; i++){
+            for(let j=0; j<B[0].length; j++){
+                Bc[i][j] = B[i][j]
+            }
+        }
+        return Bc
     }
 
     static eye(N){
-        let B = new Array( N ).fill( 0 ).map( (_, i) => {
-            let bt = new Array( N ).fill( 0 )
-            bt[i] = 1 
-            return bt
-        } )
+        let B = Matrix.zerosMatrix( N, N )
+        for(let i=0; i<N; i++){
+            B[i][i] = 1
+        }
         return B
     }
 
     static baseTranspose( B ){
-        Bt = new Array(B[0].length).map( _ => new Array( B.length ).fill(0) )
+        let Bt = Matrix.zerosMatrix( ...Matrix.shape( B ) )
         for(let j=0; j<B[0].length; j++){
             for(let i=0; i<B.length; i++){
                 Bt[j][i] = B[i][j]

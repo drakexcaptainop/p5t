@@ -1,0 +1,12 @@
+digraph G {
+    INP [label="input u1: Array, u2: Array"]
+    SUM [label="sum=0"]
+    FOR [label="for i=0:u.Length"]
+    ADD [label="sum=u1[i]+u2[i]"]
+    RET [label="return sum"]
+
+    INP -> SUM -> FOR 
+    FOR -> ADD  [label="in range"]
+    FOR -> RET [label="not in range"] 
+    ADD -> FOR 
+}
