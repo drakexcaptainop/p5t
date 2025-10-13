@@ -1,0 +1,17 @@
+digraph G {
+   INP [label="B: Matrix"]
+   SET1 [label="z = Vector(0)"]
+   SET2 [label="Bt = Matrix.zeros( Matrix.shape( B ) )"]
+   FOR_INN [label="for i=0..B.Length"]
+   FOR_EXT [label="for j=0..B[0].Length"]
+   SET [label="Bt_ij=B_ji"]
+   RET [label="return Bt"]
+
+   INP -> SET1 -> SET2 -> FOR_EXT 
+   FOR_EXT -> FOR_INN [label="in range"]
+   FOR_EXT -> RET [label="not in range"]
+   FOR_INN -> SET [label="in range"]
+   FOR_INN -> FOR_EXT [label="not in range"]
+   SET -> FOR_INN
+    
+}

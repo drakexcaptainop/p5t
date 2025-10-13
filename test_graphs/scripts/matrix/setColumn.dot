@@ -1,0 +1,11 @@
+digraph G {
+    INP [label="input B: Matrix, j: Number, column: Array"]
+    FOR [label="for i=0..B.rows"]
+    SET [label="B_ij = column_i"]
+    RET [label="return B"]
+
+    INP -> FOR
+    FOR -> SET [label="in range"] 
+    FOR -> RET [label="not in range"]
+    SET -> FOR
+}

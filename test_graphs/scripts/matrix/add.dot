@@ -1,0 +1,16 @@
+digraph G {
+   INP [label="input A: Matrix, B: Matrix"]
+   SET1 [label="arows, acols=Matrix.shape(A)"]
+   SET2 [label="brows, bcols=Matrix.shape(B)"]
+   IFL [label="arows!=brows"]
+   IFR [label="acols!=bcols"]
+   THROW [label="throw error"]
+    MAP [label="A.map( row -> row.map ( A_ij -> A_ij + B_ij ) )"]
+
+   INP -> SET1 -> SET2 -> IFL 
+   IFL -> IFR [label="true"]
+   IFR -> THROW [label="true"]
+   IFL -> IFR [label="false"]
+   IFR -> MAP
+   
+}

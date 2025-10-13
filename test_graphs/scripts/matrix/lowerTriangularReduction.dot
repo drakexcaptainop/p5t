@@ -1,0 +1,24 @@
+digraph G {
+    INP [label="input B: Matrix, I: Matrix"]
+    SET1 [label="set rows, cols"]
+
+    IF1 [label="rows!=cols"]
+
+    SET2 [label="I=I"]
+    RES [label="result=ArrayOfZeros( )"]
+    FOR [label="for i=0:u.Length"]
+    ADD [label="result[i]=arr[i]+subt"]
+    IF [label="isscalar"]
+    SUBT1 [label="subt=t[i]"]
+    SUBT2 [label="subt=t"]
+    RET [label="return result"]
+
+    INP -> ISS -> RES -> FOR 
+    FOR -> IF [label="in range"]
+    IF -> SUBT2 [label="true"]
+    IF -> SUBT1 [label="false"]
+    SUBT2 -> ADD
+    SUBT1 -> ADD 
+    FOR -> RET [label="not in range"]
+    ADD -> FOR
+}
