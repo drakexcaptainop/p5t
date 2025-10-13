@@ -6,7 +6,6 @@ const GLOBALS = {
     DefaultMaxAbsVelocity: 4
 }
 
-
 const VUtils = {
     ortho2: function ( u ) {
         return createVector( -u.y, u.x )
@@ -70,15 +69,6 @@ class GObject{
     }
 }
 
-class Ell extends GObject{
-    constructor( pos, size ) {
-        super( pos )
-        this.size = size || GLOBALS.DefaultGOSize
-    }
-    draw(){
-        ellipse(this.transform.pos.x, this.transform.pos.y, this.size)
-    }
-}
 
 class RigidBody{
     constructor( gameObject, mass ){
@@ -156,5 +146,12 @@ class Transform2d{
     transformBase2Std( P, useStdOrigin ){
         let q = VUtils.base2std( this.right, this.fwd, P )
         return useStdOrigin ? q.add( this.pos ) : q
+    }
+}
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        Transform2d,
+        VUtils
     }
 }

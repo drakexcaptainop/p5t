@@ -18,14 +18,12 @@ function draw(){
     stroke(0)
     barrel.draw()
     barrel.update()
-    noLoop()
 }
 
 function mousePressed(){
     let [obs, lnt] = hmm.samplePath( 1, currentLState )
     currentLState = lnt[lnt.length-1]
     if(obs[0]==barrel.bulletIndex){
-        noLoop()
         background(255)
         stroke ( 0 )
         text ( "LOST", width/2, height/2 )

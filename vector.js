@@ -50,22 +50,40 @@ class Vector{
         return this.copy().div( this.magnitude )
     }
     static arrayMult(arr, t){
-        return arr.map( v => v * t )
+        let result = new Array( arr.length )
+        for ( let i = 0; i < arr.length; i++ ){
+            result[i] = arr[i] * t
+        }
+        return result
     }
     static arrayAdd(arr, t){
-        let isScalar = t instanceof Number
-        return arr.map( (v, i) => v + (isScalar ? t : t[i]) )
+        let iscalar = t instanceof Number
+        let result = new Array( arr.length )
+        for ( let i = 0; i < arr.length; i++ ){
+            let addend = iscalar ? t : t[i]
+            result[i] = arr[i] + addend
+        }
+        return result
     }
     static arraySub(arr, t){
-        let isScalar = t instanceof Number
-        return arr.map( (v, i) => v - (isScalar ? t : t[i]) )
+        let isscalar = t instanceof Number
+        let result = new Array( arr.length )
+        for ( let i = 0; i < arr.length; i++ ){
+            let subtrahend = isscalar ? t : t[i]
+            result[i] = arr[i] - subtrahend
+        }
+        return result
     }
     static arrayDiv(arr, t){
         return Vector.arrayMult( arr, 1/t )
     }
 
     static arrayDot(arr1, arr2){
-        return arr1.reduce( (pr, cr, i) => pr + cr * arr2[i] )
+        let sum = 0
+        for ( let i = 0; i < arr1.length; i++ ){
+            sum += arr1[i] * arr2[i]
+        }
+        return sum
     }
     static arrayNorm(arr1, arr2){
         return Math.sqrt( Vector.arrayDot( arr1, arr2 ) )

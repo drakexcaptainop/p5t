@@ -137,7 +137,7 @@ class BoundingPrimitive{
     }
 
     checkHit(){
-
+        
     }
     getClosest(){
 
@@ -167,8 +167,8 @@ class BSpherical extends BoundingPrimitive{
     getClosest( P ){
         let dV = p5.Vector.sub( P, this.transform.pos )
         let t = dV.mag() - this.rad
-        let P = dV.normalize().mult( t )
-        return P    
+        let Pt = dV.normalize().mult( t )
+        return Pt    
     }
 }
 

@@ -56,7 +56,6 @@ const PROBABILITY_UTILS = {
 }
 
 
-
 class HMM{
     constructor(transitionMatrix, emmisionMatrix){
         // TRS[i, j] = p( Z_t = j | Z_{t-1} = i )
@@ -113,7 +112,7 @@ class HMM{
 
 
 class ClassicalDistributions{
-    static sampleStandardNormal(u, sigma){
+    static sampleNormal(u, sigma){
         u = u || 0
         sigma = sigma || 1
 
@@ -130,5 +129,9 @@ class ClassicalDistributions{
         let theta = 2 * Math.PI * u2
         let z = radius * Math.cos(theta)
         return z * sigma + u
+    }
+
+    static sampleBeta(){
+        
     }
 }
