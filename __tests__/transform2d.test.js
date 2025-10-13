@@ -114,6 +114,15 @@ describe("Transform2d", () => {
   expect(t.pos.y).toBe(-2);
   });
 
+
+  test("translate con useStandardBasis true usa el vector estandar", () => {
+  const t = new Transform2d(createVector(1, 1));
+  t.translate(createVector(2, 3));
+  expect(t.pos.x).toBe(3);
+  expect(t.pos.y).toBe(4);
+  });
+
+
   
 
 
