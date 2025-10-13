@@ -19,6 +19,23 @@ class Rect extends GObject{
   }
 }
 
+
+class Triangle extends GObject{
+    constructor( p1, p2, p3 ){
+        super( createVector() )
+        let mp = p5.Vector.sub( p2, p1  ).mult(.5).add( p1 )
+        mp = p5.Vector.sub( p3, mp ).mult( .5 ).add( mp )
+        this.transform.pos = mp
+        this.verts = [p1, p2, p3]
+    }
+    draw(){
+        beginShape ()
+        this.verts.forEach( v => vertex (v.x, v.y) )
+        fill (255)
+        endShape ( CLOSE )
+    }
+}
+
 class Barrel extends GObject{
     constructor(pos, rad, N){
         super( pos )
