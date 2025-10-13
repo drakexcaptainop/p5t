@@ -1,0 +1,7 @@
+digraph G {
+    Start -> Decision;
+    Decision -> TruePath [label="yes"];
+    Decision -> FalsePath [label="no"];
+    TruePath -> End;
+    FalsePath -> End;
+}
