@@ -104,7 +104,7 @@ class RigidBody{
 
 
 
-class Transform2d{
+class Transform2d {
     constructor(pos, fwd){
         this.pos = pos
         this.computeBase(fwd || createVector(0, -1))
@@ -124,7 +124,7 @@ class Transform2d{
         return VUtils.std2orthobase( this.right, this.fwd, u )
     }
     translate(u, useStandardBasis){
-        useStandardBasis = useStandardBasis || false
+        useStandardBasis = useStandardBasis || false 
         if(useStandardBasis){
             this.pos.add( u )
         }else{

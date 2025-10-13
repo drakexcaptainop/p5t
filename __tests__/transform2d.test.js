@@ -106,4 +106,15 @@ describe("Transform2d", () => {
     expect(backToStd.x).toBeCloseTo(point.x, 5);
     expect(backToStd.y).toBeCloseTo(point.y, 5);
   });
+
+  test("translate usa la base local por defecto", () => {
+  const t = new Transform2d(createVector(0, 0));
+  t.translate(createVector(1, 2));
+  expect(t.pos.x).toBe(1);
+  expect(t.pos.y).toBe(-2);
+  });
+
+  
+
+
 });
