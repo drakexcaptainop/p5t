@@ -1,11 +1,11 @@
 digraph G {
-   INP [label="B: Matrix"]
-   SET1 [label="z = Vector(0)"]
-   SET2 [label="Bt = Matrix.zeros( Matrix.shape( B ) )"]
-   FOR_INN [label="for i=0..B.Length"]
-   FOR_EXT [label="for j=0..B[0].Length"]
-   SET [label="Bt_ij=B_ji"]
-   RET [label="return Bt"]
+   INP [label="1. input B: Matrix"]
+   SET1 [label="2. z = Vector(0)"]
+   SET2 [label="3. Bt = Matrix.zeros( Matrix.shape( B ) )"]
+   FOR_INN [label="4. for i=0..B.Length"]
+   FOR_EXT [label="5. for j=0..B[0].Length"]
+   SET [label="6. Bt_ij=B_ji"]
+   RET [label="7. return Bt"]
 
    INP -> SET1 -> SET2 -> FOR_EXT 
    FOR_EXT -> FOR_INN [label="in range"]

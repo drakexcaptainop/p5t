@@ -1,0 +1,27 @@
+digraph G{
+    INP [label="1. input ray: Ray"]
+    SET0 [label="2. cd=Inf\nibb=null\nhp=null"]
+    FOR [label="3. obj of this"]
+    SET1 [label="4. bb=this.checkHit( obj )"]
+    IF1 [label="5. if bb!=null"]
+    SET2 [label="6. [hasHit, P]=bb.checkHit(ray)"]
+    IF2 [label="7. if !hasHit"]
+    CONT [label="8. continue"]
+    SET3 [label="9. dD=sub(P, ray.r0).mag()"]
+    IF3 [label="10. if dD<cd"]
+    SET4 [label="11. cd=dD\nibb=obj\nhp=P"]
+    RET [label="12. HitInfo(cd!=Inf, hp, ibb)"]
+
+    INP -> SET0 -> FOR 
+    FOR -> SET1 [label="in range"]
+    FOR -> RET [label="not in range"]
+    SET1 -> IF1 
+    IF1 -> FOR [label="false"]
+    IF1 -> SET2 ["true"]
+    SET2 -> IF2 
+    IF2 -> CONT [label="true"]
+    IF2 -> SET3 [label="false"]
+    SET3 -> IF3 
+    IF3 -> SET4 ["true"]
+
+}

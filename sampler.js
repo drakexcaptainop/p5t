@@ -30,7 +30,7 @@ const PROBABILITY_UTILS = {
         return result / 0x100000000
     },
     discreteSample(p){
-        let u = Math.random( )
+        let u = this.kissUniform(  )
         let cdf = 0
         for(let i=0; i < p.length; i++){
             cdf += p[i] 
@@ -41,7 +41,11 @@ const PROBABILITY_UTILS = {
     },
     normalizePmf(p){
         let s = p.reduce( (prev, curr) => prev + curr, 0 )
-        return p.map( v => v/s )
+        let res = [ ]
+        for(let i=0; i<p.length; i++){
+            res.push( p[i]/s )
+        }
+        return res
     },
     uniform(N){
         return new Array( N ).fill(1).map( _=>1/N )

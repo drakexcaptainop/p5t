@@ -1,0 +1,6 @@
+digraph G {
+   INP [label="1. input N: Number, M: Number"]
+   RET [label="2. return Array( N ).fill ( Array.zeros( M ) )"]
+   
+   INP -> RET
+}

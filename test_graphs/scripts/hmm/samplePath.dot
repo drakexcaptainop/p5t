@@ -1,0 +1,15 @@
+digraph G{
+    INP [label="1. input T: Number, Z_0: Number"]
+    SET1 [label="2. Z_t=Z_0\nobsPath=[]\nlatentPath=[]"]
+    FOR [label="3. for i=1..(T+1)"]
+    SET2 [label="4. Z_t=this.sampleState(Z_t)"]
+    SET3 [label="5. X_t=this.sampleEmission(Z_t)"]
+    SET4 [label="6. obsPath.push( X_t )"]
+    SET5 [label="7. latentPath.push( Z_t )"]
+    RET [label="8. return [obsPath, latentPath]"]
+
+    INP -> SET1 -> FOR 
+    FOR -> SET2 [label="in range"]
+    SET2 -> SET3 -> SET4 -> SET5 -> FOR 
+    FOR -> RET [label="not in range"]
+}

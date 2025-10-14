@@ -1,0 +1,32 @@
+digraph G {
+   INP [label="1. A: Matrix, B: Matrix"]
+   SET1 [label="2. arows, acols=Matrix.shape(A)"]
+   SET2 [label="3. brows, bcols=Matrix.shape(B)"]
+   
+   IF [label="4. acols!=brows"]
+   SET3 [label="5. R=Matrix.zeros( arows, bcols )"]
+   THROW [label="6. throw error"]
+   
+   FOR_EXT [label="7. for i=0..arows"]
+   FOR_INN [label="8. for k=0..bcols"]
+
+   SET4 [label="9. R_ik=Vector.arrayDot( A[i], Matrix.column( B, k ) )"]
+   RET [label="10. return R"]
+
+
+   INP -> SET1 -> SET2 -> IF 
+   IF -> THROW [label="true"]
+   IF -> SET3 [label="false"]
+
+    SET3 -> FOR_EXT
+   FOR_EXT -> FOR_INN [label="in range"]
+   FOR_EXT -> RET  [label="not in range"]
+
+   FOR_INN -> SET4 [label="in range"]
+   FOR_INN -> FOR_EXT [label="not in range"]
+   
+   SET4 -> FOR_INN
+
+    THROW -> END 
+    RET -> END
+}

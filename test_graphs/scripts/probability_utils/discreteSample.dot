@@ -1,0 +1,16 @@
+digraph G{
+    INP [label="1. inp p: Array"]
+    SET1 [label="2. cdf = 0"]
+    FOR [label="3. for i=0..p.length"]
+    SET2 [label="4. cdf += p[i]"]
+    IF [label="5. if cdf>u"]
+    RET1 [label="6. return i"]
+    RET2 [label="7. return undefined"]
+
+    INP -> SET1 ->  FOR 
+    FOR -> SET2 [label="in range"]
+    FOR -> RET2 [label="not in range"]
+    SET2 -> IF 
+    IF -> RET1 [label="true"]
+    IF -> FOR [label="false"]
+}

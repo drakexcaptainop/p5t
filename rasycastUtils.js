@@ -11,8 +11,9 @@ class World extends Array{
     let ibb = null
     let hp = null
     for(let obj of this){
-        if(this.hasBB( obj  )){
-            let [hasHit, P] = obj.bb.checkHit( ray )
+        let bb = this.hasBB( obj  )
+        if(bb){
+            let [hasHit, P] = bb.checkHit( ray )
             if(!hasHit) continue
             let dD = p5.Vector.sub( P, ray.r0 ).mag(  )
             if(dD < cd){
@@ -26,7 +27,15 @@ class World extends Array{
   }
 
   hasBB(obj){
-    return Object.entries( obj ).some( itm => itm[1] instanceof BB )
+    let bb = null
+    for(let item of Object.entries(obj)){
+      let hbb = item[1] instanceof BB
+      if(hbb){
+        bb = hbb
+        break
+      }
+    }
+    return bb
   }
 
   getClosestTo( testObj ){

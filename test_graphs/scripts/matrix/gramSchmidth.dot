@@ -1,0 +1,37 @@
+digraph G {
+    INP [label="1. input A: Matrix"]
+    SET0 [label="2. mat=Matrix.copy(A)"]
+    SET1 [label="3. rows, cols = Matrix.shape(A)"]
+    SET2 [label="4. Q=Matrix.zerosMatrix(rows,cols)"]
+    FOR_EXT [label="5. for j=0..cols"]
+    SET3 [label="6. v=Matrix.column(Q, j)"]
+    FOR_INN [label="7. for i=0..j"]
+    SET4 [label="8. q=Matrix.column(Q,i)"]
+    SET5 [label="9. projection=mult(q, dot(q, v))"]
+    SET6 [label="10. v=sub(v, projection)"]
+    SET7 [label="11. r_jj=norm(v)"]
+    IF [label="12. if r_jj > epsilon"]
+    SET8 [label="13. normalized=mult(v, 1/r_jj)"]
+    SET9 [label="14. setColumn(Q, j, normalized)"]
+    ELSE [label="15. else"]
+    SET10 [label="16. setColumn(Q, j, zeros())"]
+    RET [label="17. return Q"]
+
+    INP -> SET0 -> SET1 -> SET2 -> FOR_EXT
+    FOR_EXT -> SET3 [label="in range"]
+    FOR_EXT -> RET [label="not in range"]
+
+    SET3 -> FOR_INN 
+    FOR_INN -> SET4 [label="in range"]
+    SET4 -> SET5 -> SET6
+    SET6 -> FOR_INN
+
+    FOR_INN -> SET7 [label="not in range"]
+    SET7 -> IF 
+    IF -> SET8 [label="true"]
+    SET8 -> SET9 -> FOR_INN
+    IF -> ELSE [label="false"]
+    ELSE -> SET10 
+    SET10 -> FOR_EXT
+
+}

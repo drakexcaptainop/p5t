@@ -1,0 +1,13 @@
+digraph G{
+    INP [label="1. input p: Array"]
+    SET1 [label="2. s=sum( p )"]
+    SET2 [label="3. res=[]"]
+    FOR [label="3. for i=0..p.length"]
+    PUSH [label="4. res.push(p[i]/s)"]
+    RET [label="5. res"]
+
+    INP -> SET1 -> SET2 -> FOR 
+    FOR -> PUSH [label="in rage"]
+    FOR -> RET [label="not in range"]
+    PUSH -> FOR 
+}

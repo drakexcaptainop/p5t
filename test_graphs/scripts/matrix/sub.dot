@@ -5,14 +5,13 @@ digraph G {
    IFL [label="4. arows!=brows"]
    IFR [label="5. acols!=bcols"]
    THROW [label="6. throw error"]
-  MAP [label="7. return A.map( row -> row.map ( A_ij -> A_ij + B_ij ) )"]
+  MAP [label="7. return A.map( row -> row.map ( A_ij -> A_ij - B_ij ) )"]
 
    INP -> SET1 -> SET2 -> IFL 
-   IFL -> IFR [label="false"]
-   IFR -> THROW [label="true"]
    IFL -> THROW [label="true"]
+   IFR -> THROW [label="true"]
+   IFL -> IFR [label="false"]
    IFR -> MAP
    THROW -> END
    MAP -> END
-   
 }

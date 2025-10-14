@@ -8,13 +8,13 @@ digraph G {
 
     FOR_EXT [label="6. for j=0:cols"]
 
-    FOR_INN [label="7. for i=j..rows"]
+    FOR_INN [label="7. for i=0..j"]
     IF2 [label="8. if i==j"]
     SET3 [label="9. cst=Bc_ii"]
     SET4 [label="10. I[i]=Vector.arrayDiv( I[i], cst )"]
     SET5 [label="11. Bc[i]=Vector.arrayDiv( Bc[i], cst )"]
     
-    ELSE [label="12. Else"]
+    ELSE [label="12. else"]
     SET6 [label="13. I[i]=Vector.arraySub( mult(I[j], Bc[i][j]) )"]
     SET7 [label="14. Bc[i]=Vector.arraySub( mult(Bc[j], Bc[i][j]) )"]
     
