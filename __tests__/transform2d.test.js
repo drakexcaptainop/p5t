@@ -115,15 +115,68 @@ describe("Transform2d", () => {
   });
 
 
-  test("translate con useStandardBasis true usa el vector estandar", () => {
+ test("translate con useStandardBasis true usa el vector estandar", () => {
   const t = new Transform2d(createVector(1, 1));
-  t.translate(createVector(2, 3));
+  t.translate(createVector(2, 3), true); 
   expect(t.pos.x).toBe(3);
   expect(t.pos.y).toBe(4);
-  });
+});
 
+  test("rotate(beta) actualiza correctamente la base (fwd/right) y zrot", () => {
+  const t = new Transform2d(createVector(0, 0));
+  
+  expect(t.fwd.x).toBeCloseTo(0);
+  expect(t.fwd.y).toBeCloseTo(-1);
+  expect(t.right.x).toBeCloseTo(1);
+  expect(t.right.y).toBeCloseTo(0);
 
   
+  const beta = Math.PI / 2;
+  t.rotate(beta);
+
+  
+  expect(t.fwd.x).toBeCloseTo(1, 5);
+  expect(t.fwd.y).toBeCloseTo(0, 5);
+
+  
+  expect(t.right.x).toBeCloseTo(0, 5);
+  expect(t.right.y).toBeCloseTo(1, 5);
+
+  
+  expect(t.zrot).toBeCloseTo(t.right.heading(), 5);
+
+  
+  t.rotate(-Math.PI / 2);
+  expect(t.fwd.x).toBeCloseTo(0, 5);
+  expect(t.fwd.y).toBeCloseTo(-1, 5);
+  expect(t.right.x).toBeCloseTo(1, 5);
+  expect(t.right.y).toBeCloseTo(0, 5);
+  expect(t.zrot).toBeCloseTo(t.right.heading(), 5);
+});
+
+  
+test("base2Std() y std2Base() convierten correctamente entre bases", () => {
+
+  const t = new Transform2d(createVector(0, 0));
+
+  const localRight = createVector(1, 0);
+  const stdFromRight = t.base2Std(localRight);
+  expect(stdFromRight.x).toBeCloseTo(t.right.x, 5);
+  expect(stdFromRight.y).toBeCloseTo(t.right.y, 5);
+
+  const localFwd = createVector(0, 1);
+  const stdFromFwd = t.base2Std(localFwd);
+  expect(stdFromFwd.x).toBeCloseTo(t.fwd.x, 5);
+  expect(stdFromFwd.y).toBeCloseTo(t.fwd.y, 5);
+
+  const backToBaseFromRight = t.std2Base(stdFromRight);
+  expect(backToBaseFromRight.x).toBeCloseTo(1, 5);
+  expect(backToBaseFromRight.y).toBeCloseTo(0, 5);
+
+  const backToBaseFromFwd = t.std2Base(stdFromFwd);
+  expect(backToBaseFromFwd.x).toBeCloseTo(0, 5);
+  expect(backToBaseFromFwd.y).toBeCloseTo(1, 5);
+});
 
 
 });
