@@ -117,7 +117,6 @@ class Matrix{
         let [rows, cols] = Matrix.shape( B )
         let Bc = Matrix.copy( B )
         if(rows != cols) throw new Error( "Invalid" )
-        I = I || Matrix.eye( rows )
         for( let j=0; j<cols;j++ ){
             for(let i=0; i<j; i++){
                 if(i == j){
@@ -133,11 +132,9 @@ class Matrix{
         return [Bc, I]
     }
     static lowerTriangularReduction(B, I){
-        let rows = B.length
-        let cols = B[0].length
+        let [rows, cols] = Matrix.shape( B )
         let Bc = Matrix.copy( B )
         if(rows != cols) throw new Error( "Invalid" )
-        I= I || Matrix.eye( rows )
         for( let j=0; j<cols;j++ ){
             for(let i=j; i<rows; i++){
                 if(i == j){
@@ -171,9 +168,10 @@ class Matrix{
     
 
     static copy(B){
-        let Bc = new Array( B.length ).fill( 0 )
-        for(let i=0; i<B.length[0]; i++){
-            for(let j=0; j<B[0].length; j++){
+        let [rows, cols] = Matrix.shape( B )
+        let Bc = Matrix.zerosMatrix(rows, cols)
+        for(let i=0; i<rows; i++){
+            for(let j=0; j<cols; j++){
                 Bc[i][j] = B[i][j]
             }
         }
@@ -214,11 +212,10 @@ class Matrix{
         }
         const result = Matrix.zerosMatrix(aRows, bCols)
         for (let i = 0; i < aRows; i++) {
-            for (let k = 0; k < aCols; k++) {
-                const aik = A[i][k]
-                for (let j = 0; j < bCols; j++) {
-                    result[i][j] += aik * B[k][j]
-                }
+            for (let k = 0; k < bCols; k++) {
+                result[i][k] = Vector.arrayDot(
+                    A[i], Matrix.column( B, k )
+                )
             }
         }
         return result
@@ -270,34 +267,14 @@ class MatrixDecomposition{
         return Q
     }
     static upperTriangularFromQ(A, Q){
-        const [, cols] = Matrix.shape(A)
-        const R = Matrix.zerosMatrix(cols, cols)
-        for(let i = 0; i < cols; i++){
-            const qi = Matrix.column(Q, i)
-            for(let j = i; j < cols; j++){
-                const aj = Matrix.column(A, j)
-                R[i][j] = Vector.arrayDot(qi, aj)
-            }
-        }
-        return R
+        let Qt = Matrix.baseTranspose( Q )
+        return Matrix.matMult( Qt, A )
     }
 
     static QR(A){
         const Q = MatrixDecomposition.gramSchmidt(A)
         const R = MatrixDecomposition.upperTriangularFromQ(A, Q)
         return [Q, R]
-    }
-    static LU(){
-
-    }
-    static NNMF(){
-
-    }
-    static EIG(){
-
-    }
-    static SVD(){
-        
     }
 }
 

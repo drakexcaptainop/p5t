@@ -1,0 +1,12 @@
+digraph G{
+    INP [label="1. input states: Array"]
+    IF [label="2. states==null"]
+    SET1  [label="3. this.states=[0, 1, ..., states.length-1]"]
+    SET2 [label="4. this.states=states"]
+
+    INP -> IF 
+    IF -> SET1 [label="true"]
+    IF -> SET2 [label="false"]
+    SET1 -> END 
+    SET2 -> END    
+}

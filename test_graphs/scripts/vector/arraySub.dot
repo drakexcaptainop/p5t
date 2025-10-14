@@ -1,13 +1,13 @@
 digraph G {
-    INP [label="input u: Array, t: Number | Array"]
-    ISS [label="isscalar=t instanceof Number"]
-    RES [label="result=ArrayOfZeros( )"]
-    FOR [label="for i=0:u.Length"]
-    ADD [label="result[i]=arr[i]-subt"]
-    IF [label="isscalar"]
-    SUBT1 [label="subt=t[i]"]
-    SUBT2 [label="subt=t"]
-    RET [label="return result"]
+    INP [label="1. input u: Array, t: Number | Array"]
+    ISS [label="2. isscalar=t instanceof Number"]
+    RES [label="3. result=ArrayOfZeros( )"]
+    FOR [label="4. for i=0:u.Length"]
+    ADD [label="5. result[i]=arr[i]-subt"]
+    IF [label="6. isscalar"]
+    SUBT1 [label="7. subt=t[i]"]
+    SUBT2 [label="8. subt=t"]
+    RET [label="9. return result"]
 
     INP -> ISS -> RES -> FOR 
     FOR -> IF [label="in range"]

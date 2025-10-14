@@ -1,9 +1,9 @@
 digraph G {
-    B [label="input u: Vector"]
-    C [label="this.x+=u.x\nthis.y+=this.x"]
-    IF [label="if u == null"]
-    E [label="u = this"]
-    RET [label="return this.x*u.x+\nthis.y*u.y+\nthis.z*u.z"]
+    B [label="1. input u: Vector"]
+    C [label="2. this.x+=u.x\nthis.y+=this.x"]
+    IF [label="3. if u == null"]
+    E [label="4. u = this"]
+    RET [label="5. return this.x*u.x+\nthis.y*u.y+\nthis.z*u.z"]
     B -> C -> IF 
     IF -> E [label="true"] 
     E -> RET

@@ -1,0 +1,9 @@
+digraph G{
+    INP [label="1. read EMM=this.EMM"]
+    FOR [label="2. for i=0..this.states.length"]
+    SET1 [label="3. EMM[i]=PROBABILITY_UTILS.normalizePmf(EMM[i])"]
+    
+    INP -> FOR 
+    FOR -> SET1 ["in range"]
+    FOR -> END ["not in range"]
+}

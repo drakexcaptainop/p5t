@@ -1,0 +1,12 @@
+digraph G{
+    INP [label="1. input observables: Array"]
+    IF [label="2. observables==null"]
+    SET1  [label="3. this.observables=[0, 1, ..., observables.length-1]"]
+    SET2 [label="4. this.observables=observables"]
+
+    INP -> IF 
+    IF -> SET1 [label="true"]
+    IF -> SET2 [label="false"]
+    SET1 -> END 
+    SET2 -> END    
+}

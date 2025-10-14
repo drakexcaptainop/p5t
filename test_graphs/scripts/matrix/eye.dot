@@ -1,0 +1,12 @@
+digraph G {
+   INP [label="1. input N: Number"]
+   SET1 [label="2. B=Matrix.zerosMatrix(N,N)"]
+   FOR [label="3. for i=0..N"]
+   SET2 [label="4. B_ii=1"]
+   RET [label="5. return B"]
+   
+   INP -> SET1
+   FOR -> SET2 [label="in rage"]
+   FOR -> RET  [label="not in range"]
+   SET2 -> FOR 
+}

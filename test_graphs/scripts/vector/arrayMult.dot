@@ -1,9 +1,9 @@
 digraph G {
-    INP [label="input u: Array, t: Number"]
-    RES [label="result=ArrayOfZeros( )"]
-    FOR [label="for i=0:u.Length"]
-    ADD [label="result[i]*=t"]
-    RET [label="return result"]
+    INP [label="1. input u: Array, t: Number"]
+    RES [label="2. result=ArrayOfZeros( )"]
+    FOR [label="3. for i=0:u.Length"]
+    ADD [label="4. result[i]*=t"]
+    RET [label="5. return result"]
     INP -> RES -> FOR 
     FOR -> RET [label="not in range"]
     FOR -> ADD [label="in range"]

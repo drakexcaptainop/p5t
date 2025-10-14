@@ -1,0 +1,31 @@
+digraph G{
+    INP [label="1. input u: Number, sigma: Number"]
+    IF1 [label="2. if u==undefined"]
+    SET1 [label="3. u=0"]
+    IF2 [label="4. if simga==undefined"]
+    SET2 [label="5. sigma=1"]
+    SET3 [label="6. u1=0, u2=0"]
+    WHILE1 [label="7. while u1==0"]
+    SET4 [label="8. u1=PROBABILITY_UTIL.kissUniform()"]
+    WHILE2 [label="9. while u2==0"]
+    SET5 [label="10. u2=PROBABILITY_UTIL.kissUniform()"]
+    SET6 [label="11. rad=sqrt(-2*sqrt(log(u1)))"]
+    SET7 [label="12. theta=2*PI*u2"]
+    SET8 [label="13. rad*cos(theta)"]
+    RET [label="14. return z * sigma + u"]
+
+
+    INP -> IF1 
+    IF1 -> SET1 [label="true"]
+    IF1 -> IF2 [label="false"]
+    SET1 -> IF2 
+    IF2 -> SET2 [label="true"]
+    SET2 -> SET3 
+    IF2 -> SET3 [label="false"]
+    SET3 -> WHILE1 
+    WHILE1 -> WHILE2 [label="false"]
+    WHILE1 -> SET4 [label="true"]
+    WHILE2 -> SET5 [label="true"]
+    WHILE2 -> SET6 [label="false"]
+    SET6 -> SET7 -> SET8 -> RET
+}
