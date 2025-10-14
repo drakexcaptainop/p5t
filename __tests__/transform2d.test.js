@@ -179,4 +179,30 @@ test("base2Std() y std2Base() convierten correctamente entre bases", () => {
 });
 
 
+test("transformStd2Base() y transformBase2Std() transforman correctamente los puntos", () => {
+  const t = new Transform2d(createVector(5, 5));
+
+  const P_std = createVector(7, 2);
+  const P_base = t.transformStd2Base(P_std);
+
+  
+  expect(P_base.x).toBeCloseTo(2, 5);
+  expect(P_base.y).toBeCloseTo(3, 5); 
+
+  const P_std_recovered = t.transformBase2Std(P_base, true);
+  expect(P_std_recovered.x).toBeCloseTo(P_std.x, 5);
+  expect(P_std_recovered.y).toBeCloseTo(P_std.y, 5);
+
+  const Q_std = createVector(2, 2);
+  const Q_base_onOrigin = t.transformStd2Base(Q_std, true);
+
+  expect(Q_base_onOrigin.x).toBeCloseTo(Q_std.x, 5);
+  expect(Q_base_onOrigin.y).toBeCloseTo(-Q_std.y, 5); 
+
+  const Q_std_fromBase = t.transformBase2Std(Q_base_onOrigin, false);
+  expect(Q_std_fromBase.x).toBeCloseTo(Q_std.x, 5);
+  expect(Q_std_fromBase.y).toBeCloseTo(Q_std.y, 5);
+});
+
+
 });
