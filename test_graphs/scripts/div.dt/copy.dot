@@ -1,0 +1,12 @@
+digraph G_Copy {
+   
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    Start [shape=ellipse];
+    End [shape=ellipse];
+
+    A [label="Retornar new Vector(this.x, this.y, this.z)"];
+
+    Start -> A -> End;
+}

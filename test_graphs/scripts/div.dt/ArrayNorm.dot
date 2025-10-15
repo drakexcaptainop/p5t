@@ -1,0 +1,13 @@
+digraph G {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    Start [shape=ellipse];
+    End [shape=ellipse];
+
+    A [label="Llamar a Vector.arrayDot(arr, arr)"];
+    B [label="Aplicar Math.sqrt al resultado"];
+    C [label="Retornar norma"];
+
+    Start -> A -> B -> C -> End;
+}

@@ -1,0 +1,13 @@
+digraph G_Orthogonal2d {
+    // Grafo para el getter orthogonal2d
+    // Complejidad Ciclomática: 1
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    Start [shape=ellipse];
+    End [shape=ellipse];
+
+    A [label="Retornar new Vector(-this.y, this.x, 0)"];
+
+    Start -> A -> End;
+}

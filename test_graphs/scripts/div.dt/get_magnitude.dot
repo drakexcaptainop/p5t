@@ -1,0 +1,20 @@
+// This file contains DOT language code for Graphviz, not JavaScript.
+// If you want to use this graph in JavaScript, you need to use a library like viz.js or convert it to JavaScript objects.
+
+const dot = `
+digraph G{
+    // Grafo para el getter magnitude
+    // Complejidad Ciclomática: 1
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    Start [shape=ellipse];
+    End [shape=ellipse];
+
+    A [label="Llamar a this.dot()"];
+    B [label="Aplicar Math.sqrt al resultado"];
+    C [label="Retornar magnitud"];
+
+    Start -> A -> B -> C -> End;
+}
+`;

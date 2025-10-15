@@ -1,0 +1,15 @@
+digraph G_Constructor {
+    // Grafo para el constructor de la clase Vector
+    // Complejidad Ciclomática: 1
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    
+    A [label="this.x = x"];
+    B [label="this.y = y"];
+    C [label="this.z = z"];
+
+    Start -> A -> B -> C -> End;
+}
