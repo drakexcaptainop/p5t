@@ -46,8 +46,7 @@ describe('Matrix class static methods', () => {
 
   test('matMult(A, B) debe multiplicar dos matrices', () => {
     const result = Matrix.matMult(testMatrixA, testMatrixB);
-    // [1*5+2*7, 1*6+2*8] = [19, 22]
-    // [3*5+4*7, 3*6+4*8] = [43, 50]
+    
     expect(result).toEqual([[19, 22], [43, 50]]);
   });
 
@@ -64,14 +63,12 @@ describe('Matrix class static methods', () => {
   test('baseInverse2d(B) debe calcular la inversa de una matriz 2x2', () => {
     const matrix = [[4, 7], [2, 6]];
     const inverse = Matrix.baseInverse2d(matrix);
-    // det = 4*6 - 7*2 = 24 - 14 = 10
-    // inv = 1/10 * [[6, -7], [-2, 4]] = [[0.6, -0.7], [-0.2, 0.4]]
+    
     expect(inverse[0][0]).toBeCloseTo(0.6);
     expect(inverse[0][1]).toBeCloseTo(-0.7);
     expect(inverse[1][0]).toBeCloseTo(-0.2);
     expect(inverse[1][1]).toBeCloseTo(0.4);
 
-    // M * M^-1 debe ser la matriz identidad
     const identity = Matrix.matMult(matrix, inverse);
     expect(identity[0][0]).toBeCloseTo(1);
     expect(identity[0][1]).toBeCloseTo(0);
