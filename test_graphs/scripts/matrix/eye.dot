@@ -6,6 +6,7 @@ digraph G {
    RET [label="5. return B"]
    
    INP -> SET1
+   SET1 -> FOR
    FOR -> SET2 [label="in rage"]
    FOR -> RET  [label="not in range"]
    SET2 -> FOR 
