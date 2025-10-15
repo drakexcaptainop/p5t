@@ -6,6 +6,15 @@ const DEBUG = {
     },
     endDebug(){
         if(this.Debug) pop()
+
+    if (typeof module !== "undefined") {
+        module.exports = {
+            Ray,
+            BoundingPrimitive,
+            BSpherical,
+            BB
+        }
+    }
     },
     debug(f, ctx){
         if(!this.Debug) return
