@@ -3,9 +3,9 @@ const { PROBABILITY_UTILS } = require('../../sampler');
 describe("PROBABILITY_UTILS.discreteSample", () => {
   test("la distrubcion de entrada tiene elementeos", () => {
     let p = [.1, .5, .4]
-    expect(PROBABILITY_UTILS.discreteSample(p)).toBe(
-      2
-    );
+    jest.spyOn(Math, "random")
+      .mockReturnValueOnce(0.01)
+    expect(PROBABILITY_UTILS.discreteSample(p)).toBe(0);
   });
 
   test("la distrubcion de entrada esta vacia", () => {
@@ -16,7 +16,6 @@ describe("PROBABILITY_UTILS.discreteSample", () => {
   });
   
 });
-
 
 
 
@@ -45,7 +44,6 @@ describe("PROBABILITY_UTILS.setKissState", () => {
             {x: 123456789, y: 3735928559, z: 19088743, c: 11259375}
         )
   });
-  
 });
 
 describe("PROBABILITY_UTILS.concentratedUniform", () => {

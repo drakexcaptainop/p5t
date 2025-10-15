@@ -121,10 +121,10 @@ describe("Vector.prototype.copy", () => {
   });
 });
 
-describe("Vector.prototype.mag y magnitude", () => {
-  test("mag retorna el mismo valor que la propiedad magnitude", () => {
-    const vector = new Vector(3, 4, 0);
-    expect(vector.mag()).toBeCloseTo(5);
+describe("Vector.prototype.mag", () => {
+  test("mag retorna la magnitud del vector", () => {
+    const vector = new Vector(1, 5, 0);
+    expect(vector.mag()).toBeCloseTo(5.0990, 4); //.mag() ~ 5.0990
   });
 });
 

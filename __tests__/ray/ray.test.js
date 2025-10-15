@@ -160,7 +160,7 @@ describe('Ray (métodos sin control de flujo)', () => {
     const rd = { x: 1, y: 2, z: 0, dot(v){ return this.x*v.x + this.y*v.y + this.z*(v.z??0); } };
     const ray = new Ray(r0, rd);
 
-    const [Px, Py] = ray.intersectCurrentStdBase(); // con r0=(0,0), ambas t=0 → r0
+    const [Px, Py] = ray.intersectCurrentStdBase(); 
     expect({x: Px.x, y: Px.y, z: Px.z}).toEqual({ x: 0, y: 0, z: 0 });
     expect({x: Py.x, y: Py.y, z: Py.z}).toEqual({ x: 0, y: 0, z: 0 });
   });
@@ -183,7 +183,7 @@ describe('Ray (métodos sin control de flujo)', () => {
     const ray = new Ray(r0, rd);
 
     const spy = jest.spyOn(Ray.prototype, 'intersectSphereComponent').mockReturnValue(3);
-    const P = ray.intersectSphere({ x: 0, y: 0, z: 0 }, 1); // eval(3) = r0 + 3*rd = (1+6,1,0) = (7,1,0)
+    const P = ray.intersectSphere({ x: 0, y: 0, z: 0 }, 1); 
 
     expect(spy).toHaveBeenCalled();
     expect({x: P.x, y: P.y, z: P.z}).toEqual({ x: 7, y: 1, z: 0 });

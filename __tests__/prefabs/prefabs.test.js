@@ -1,11 +1,5 @@
-// Prefabs.test.js
-// Tests for: Ell, Rect, Triangle, Barrel
-// Uses the REAL implementations of GObject, Transform2d, RigidBody, VUtils from your code.
-// We only polyfill the p5-style globals (createVector, p5.Vector, constrain, sin, cos, etc.).
-// No tests call any draw() method.
 
 describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/RigidBody/VUtils', () => {
-  // ---------- Minimal p5-style environment (polyfills) ----------
   const makeVec = (x = 0, y = 0, z = 0) => ({
     x, y, z,
     add(v) { this.x += (v.x ?? 0); this.y += (v.y ?? 0); this.z += (v.z ?? 0); return this; },
@@ -21,7 +15,6 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
   let Transform2d, RigidBody, GObject, VUtils, Ell, Rect, Triangle, Barrel, BB;
 
   beforeAll(() => {
-    // p5-like globals
     global.p5 = {
       Vector: {
         mult: (v, t) => makeVec((v.x ?? 0) * t, (v.y ?? 0) * t, (v.z ?? 0) * t),
@@ -34,7 +27,6 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     global.sin = Math.sin;
     global.TWO_PI = Math.PI * 2;
 
-    // GLOBALS used by Ell.size default
     global.GLOBALS = {
       DefaultGravity: 0.2,
       DefaultMass: 1,
@@ -43,44 +35,25 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
       DefaultMaxAbsVelocity: 4,
     };
 
-    // Load real implementations from your gameObject file
-    // Adjust the path if your file lives elsewhere:
+
     const gameObjectMod = require('../../gameObject.js');
     Transform2d = gameObjectMod.Transform2d;
     RigidBody   = gameObjectMod.RigidBody;
     GObject     = gameObjectMod.GObject;
     VUtils      = gameObjectMod.VUtils;
 
-    // Load prefabs (Ell, Rect, Triangle, Barrel). Adjust path if needed.
-    // Expect your prefabs module to export these classes;
-    // if not, we fall back to globals.
-    try {
-      ({ Ell, Rect, Triangle, Barrel } = require('../../prefabs'));
-    } catch {
-      Ell = global.Ell;
-      Rect = global.Rect;
-      Triangle = global.Triangle;
-      Barrel = global.Barrel;
-    }
+    global.Transform2d = Transform2d
+    global.GObject = GObject
+    global.RigidBody = RigidBody
+    global.VUtils = gameObjectMod.VUtils
 
-    // BB (for Rect). If you have it exported from another module, require it; else use global.
-    try {
-      ({ BB } = require('./World.js'));
-    } catch {
-      BB = global.BB;
-    }
+    ({ Ell, Rect, Triangle, Barrel } = require('../../prefabs'));
 
-    // Sanity: ensure core classes exist
-    expect(typeof GObject).toBe('function');
-    expect(typeof Transform2d).toBe('function');
-    expect(typeof VUtils).toBe('object');
-    expect(typeof Ell).toBe('function');
-    expect(typeof Rect).toBe('function');
-    expect(typeof Triangle).toBe('function');
-    expect(typeof Barrel).toBe('function');
+    ({ BB } = require('../../primitives.js'));
+
+
   });
 
-  // ========== Ell ==========
   describe('Ell', () => {
     test('constructor sets transform.pos and explicit size', () => {
       const pos = createVector(10, 20);
@@ -101,11 +74,9 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     });
   });
 
-  // ========== Rect ==========
   describe('Rect', () => {
     test('constructor creates bb with the Rect transform; width/height set', () => {
       if (typeof BB !== 'function') {
-        // If BB class isn’t available, skip Rect-specific test gracefully.
         return;
       }
       const pos = createVector(1, 2);
@@ -128,16 +99,12 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     });
   });
 
-  // ========== Triangle ==========
   describe('Triangle', () => {
     test('constructor sets transform.pos to iterative midpoint and stores verts', () => {
       const p1 = createVector(0, 0);
       const p2 = createVector(4, 0);
       const p3 = createVector(4, 4);
 
-      // Expected mp (same computation as in the class):
-      // mp = (p2 - p1)*0.5 + p1 = (2,0)
-      // mp = (p3 - mp)*0.5 + mp = (3,2)
       const expected = { x: 3, y: 2, z: 0 };
 
       const tri = new Triangle(p1, p2, p3);
@@ -145,7 +112,6 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
       expect({ x: tri.transform.pos.x, y: tri.transform.pos.y, z: tri.transform.pos.z })
         .toEqual(expected);
 
-      // verts
       expect(tri.verts.length).toBe(3);
       expect({ x: tri.verts[0].x, y: tri.verts[0].y, z: tri.verts[0].z })
         .toEqual({ x: p1.x, y: p1.y, z: p1.z });
@@ -156,7 +122,6 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     });
   });
 
-  // ========== Barrel ==========
   describe('Barrel', () => {
     test('constructor initializes rad, diam, N, rotStep, and state fields', () => {
       const b = new Barrel(createVector(0, 0), 5, 8);
@@ -178,7 +143,6 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     test('stepState() advances target/next, wraps, increments currentTurns at wrap, and sets targetAngle', () => {
       const b = new Barrel(createVector(0, 0), 5, 6);
 
-      // First step
       b.stepState();
       expect(b.target).toBe(1);
       expect(b.next).toBe(2);
@@ -186,9 +150,8 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
       const expectedAngle1 = 1 / 6 * (TWO_PI + b.rotStep);
       expect(b.targetAngle).toBeCloseTo(expectedAngle1, 12);
 
-      // Force near wrap, then step
       b.next = 5;
-      b.stepState(); // next -> 0, wraps ⇒ currentTurns++
+      b.stepState(); 
       expect(b.target).toBe(5);
       expect(b.next).toBe(0);
       expect(b.currentTurns).toBe(1);
@@ -199,13 +162,11 @@ describe('Prefabs (Ell, Rect, Triangle, Barrel) with real GObject/Transform2d/Ri
     test('update() increases rot by rotStep/10 and clamps to targetAngle', () => {
       const b = new Barrel(createVector(0, 0), 5, 10);
 
-      // Case 1: large targetAngle → rot increases by rotStep/10
       b.targetAngle = 999;
       const inc = b.rotStep / 10;
       b.update();
       expect(b.rot).toBeCloseTo(inc, 12);
 
-      // Case 2: small targetAngle → rot clamped to targetAngle
       const b2 = new Barrel(createVector(0, 0), 5, 10);
       b2.targetAngle = 0.02;
       b2.rot = 0.015;

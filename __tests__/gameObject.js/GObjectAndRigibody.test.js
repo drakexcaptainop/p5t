@@ -120,28 +120,18 @@ const makeVec = (x = 0, y = 0, z = 0) => ({
 
         rb.active = true;
         rb.mass = 2;                 // para ver efecto de 1/m
-        rb.velocity = createVector(1, 1); // estado inicial
+        rb.velocity = createVector(1, 1); 
 
-        // EXPECTATIVA:
-        // Base por defecto de Transform2d: fwd=(0,-1), right=(1,0).
-        // std2Base((0,g)) = (0, -g).
-        // massRescale => (0, -g)/m.
-        // velocity nueva => (1, 1 - g/m).
         const g = GLOBALS.DefaultGravity;
         const expectedV = { x: 1 + 0, y: 1 + (-g) / rb.mass, z: 0 };
 
-        // Al traducir con translate(velocity) (base local):
-        // base2std(right,fwd, velocity) = right*vx + fwd*vy = (vx, -vy).
-        // Δpos = (expectedV.x, -expectedV.y).
         const before = { x: go.transform.pos.x, y: go.transform.pos.y, z: go.transform.pos.z };
 
         rb.update();
 
-        // velocity actualizada
         expect({ x: rb.velocity.x, y: rb.velocity.y, z: rb.velocity.z })
           .toEqual(expectedV);
 
-        // posición actualizada
         expect({ x: go.transform.pos.x, y: go.transform.pos.y, z: go.transform.pos.z })
           .toEqual({ x: before.x + expectedV.x, y: before.y + (-expectedV.y), z: before.z });
       });
@@ -162,11 +152,11 @@ const makeVec = (x = 0, y = 0, z = 0) => ({
 
       test('branch activo: suma F/mass a velocity (usando massRescale real)', () => {
         const go = new GObject(createVector(0, 0));
-        const rb = new RigidBody(go, 4); // 1/mass = 0.25
+        const rb = new RigidBody(go, 4); 
         rb.active = true;
         rb.velocity = createVector(1, 2);
 
-        rb.addForce(createVector(8, -12)); // F/m = (2, -3)
+        rb.addForce(createVector(8, -12)); 
 
         expect({ x: rb.velocity.x, y: rb.velocity.y, z: rb.velocity.z })
           .toEqual({ x: 3, y: -1, z: 0 });
