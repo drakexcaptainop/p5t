@@ -1,9 +1,7 @@
-// tests/GObject/gObject.test.js
 
 require('../p5.mock.js');
 const { GObject } = require('../../gameObject.js');
 
-// Mockear las clases dependientes
 jest.mock('../../gameObject.js', () => {
   const originalModule = jest.requireActual('../../gameObject.js');
   return {
@@ -18,7 +16,6 @@ jest.mock('../../gameObject.js', () => {
 describe('GObject (Complejidad 1)', () => {
   let gObject;
   beforeEach(() => {
-    // Limpiar mocks antes de cada prueba
     const { Transform2d, RigidBody } = require('../../gameObject.js');
     Transform2d.mockClear();
     RigidBody.mockClear();

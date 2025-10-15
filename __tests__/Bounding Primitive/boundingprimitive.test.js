@@ -1,5 +1,5 @@
-const { BoundingPrimitive, Ray } = require("../primitives.js");
-const { Transform2d } = require("../gameObject.js");
+const { BoundingPrimitive, Ray } = require("../../primitives.js");
+const { Transform2d } = require("../../gameObject.js");
 
 function createVector(x = 0, y = 0) {
   return {
