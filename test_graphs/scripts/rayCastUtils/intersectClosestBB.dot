@@ -17,11 +17,11 @@ digraph G{
     FOR -> RET [label="not in range"]
     SET1 -> IF1 
     IF1 -> FOR [label="false"]
-    IF1 -> SET2 ["true"]
+    IF1 -> SET2 [label="true"]
     SET2 -> IF2 
     IF2 -> CONT [label="true"]
     IF2 -> SET3 [label="false"]
     SET3 -> IF3 
-    IF3 -> SET4 ["true"]
+    IF3 -> SET4 [label="true"]
 
 }

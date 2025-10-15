@@ -16,7 +16,7 @@ digraph G{
     IF -> SET3 [label="true"]
     SET3 -> BREAK
     BREAK -> RET 
-    
+
     IF -> FOR [label="false"]
 
 

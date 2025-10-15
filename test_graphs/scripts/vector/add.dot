@@ -1,0 +1,6 @@
+digraph G {
+    INP [label="1. input u: Vector"]
+    SET [label="2. this.x+=u.x\nthis.y+=u.y\nthis.z=z"]
+    RET [label="3. return this"]
+    INP -> SET -> RET
+}
