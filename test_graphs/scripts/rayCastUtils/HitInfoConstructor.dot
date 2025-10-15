@@ -1,0 +1,15 @@
+digraph G_HitInfo_Constructor {
+    // Grafo para el constructor de la clase HitInfo
+    // Complejidad Ciclomática: 1
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    
+    A [label="this.hasHit = hasHit"];
+    B [label="this.P = P"];
+    C [label="this.obj = obj"];
+
+    Start -> A -> B -> C -> End;
+}

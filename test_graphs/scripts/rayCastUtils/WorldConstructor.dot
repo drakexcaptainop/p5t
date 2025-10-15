@@ -1,0 +1,12 @@
+digraph G_World_Constructor {
+ 
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    Start [shape=ellipse];
+    End [shape=ellipse];
+
+    A [label="Llamar a super()"];
+
+    Start -> A -> End;
+}
