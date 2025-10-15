@@ -1,0 +1,9 @@
+digraph G_GObject_Constructor {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="this.transform = new Transform2d(pos)"];
+    B [label="this.rigidBody = new RigidBody(this)"];
+    Start -> A -> B -> End;
+}

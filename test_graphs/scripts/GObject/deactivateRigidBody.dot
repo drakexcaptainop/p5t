@@ -1,0 +1,9 @@
+digraph G_GObject_deactivateRigidBody {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="this.rigidBody.active = false"];
+    B [label="return this"];
+    Start -> A -> B -> End;
+}

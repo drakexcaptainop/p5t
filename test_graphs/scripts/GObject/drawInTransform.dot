@@ -1,0 +1,14 @@
+digraph G_GObject_drawInTransform {
+
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="push()"];
+    B [label="translate(this.transform.pos)"];
+    C [label="rotate(this.transform.zrot)"];
+    D [label="translate(...)"];
+    E [label="this.draw()"];
+    F [label="pop()"];
+    Start -> A -> B -> C -> D -> E -> F -> End;
+}

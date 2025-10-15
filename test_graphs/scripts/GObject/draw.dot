@@ -1,0 +1,7 @@
+digraph G_GObject_draw {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    Start -> End; // El método está vacío
+}
