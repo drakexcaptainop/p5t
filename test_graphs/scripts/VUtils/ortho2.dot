@@ -1,0 +1,8 @@
+digraph G_VUtils_ortho2 {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="Retornar createVector(-u.y, u.x)"];
+    Start -> A -> End;
+}
