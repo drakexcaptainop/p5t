@@ -1,0 +1,8 @@
+digraph G_RigidBody_constrainVelocity {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="this.velocity = VUtils.clamp(...)"];
+    Start -> A -> End;
+}

@@ -1,0 +1,8 @@
+digraph G_RigidBody_massRescale {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="Retornar p5.Vector.mult(v, 1/this.mass)"];
+    Start -> A -> End;
+}

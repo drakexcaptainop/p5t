@@ -1,0 +1,8 @@
+digraph G_Transform2d_computeRot {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    Start [shape=ellipse];
+    End [shape=ellipse];
+    A [label="this.zrot = this.right.heading()"];
+    Start -> A -> End;
+}
