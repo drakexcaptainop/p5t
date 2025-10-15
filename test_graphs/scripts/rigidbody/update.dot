@@ -1,0 +1,9 @@
+digraph G{
+    IF [label="1.if this.active"]
+    SET1 [label="2. velocity.add( gravity )"]
+    SET2 [label="3. constrainVelocity()"]
+    SET3 [label="3. translate(velocity) "]
+
+    IF -> END [label="true"]
+    IF -> SET1 -> SET2 -> SET3 -> END
+}

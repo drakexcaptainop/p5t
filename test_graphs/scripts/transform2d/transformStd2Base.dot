@@ -1,0 +1,14 @@
+digraph G{
+    INP [label="1. input onOrigin, P: Vector"]
+    IF [label="2. if onOrigin"]
+    SET [label="3. q = P"]
+    ELSE [label="4. q = sub(P, this.pos)"]
+    RET [label="5. std2Orthobase( this.right, this.fwd, q )"]
+
+    INP -> IF 
+    IF -> SET [label="true"]
+    SET -> RET 
+
+    IF -> ELSE [label="false"]
+    ELSE -> RET 
+}

@@ -1,0 +1,12 @@
+digraph G{
+    INP [label="1. input useStandardBasis:Bool=False, u:Vector"]
+    IF[label="2. useStandardBasis"]
+    SET [label="3. this.pos.add( u )"]
+    ELSE [label="4. this.pos.add( 
+        base2std( this.right, this.fwd, u )
+     )"]
+    IF -> SET [label="true"]
+    IF -> ELSE [label="false"]
+    ELSE -> END 
+    SET -> END
+}

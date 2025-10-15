@@ -51,12 +51,10 @@ class Barrel extends GObject{
         this.currentTurns = 0
     }
     stepState(){
-        print('calling step')
         this.target = this.next
         this.next = (this.next + 1) % this.N
         this.currentTurns += this.next === 0
         this.targetAngle = this.target / this.N * ( TWO_PI+this.rotStep  ) 
-        print(this.targetAngle, TWO_PI, 0)
     }
     update (){
         this.rot += this.rotStep / 10
@@ -76,5 +74,12 @@ class Barrel extends GObject{
     }
     step(  ){
 
+    }
+}
+
+
+if (typeof module !== "undefined") {
+    module.exports = {
+       Barrel, Ell, Triangle, Rect
     }
 }

@@ -152,6 +152,8 @@ class Transform2d{
 if (typeof module !== "undefined") {
     module.exports = {
         Transform2d,
+        RigidBody,
+        GObject,
         VUtils
     }
 }
