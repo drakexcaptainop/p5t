@@ -11,7 +11,6 @@ describe("ClassicalDistributions.sampleNormal", () => {
     const u1 = 0.5, u2 = 0.25;
     const expected = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
     expect(result).toBeCloseTo(expected);
-
-    mockRandom.mockRestore();
+    
   });
 });

@@ -29,8 +29,6 @@ const PRIMITIVE_GLOBALS = {
     Eps: 1e-6 ,
     
 }
-
-
 class Ray{
     constructor(origin, direction){
         this.r0 = origin
@@ -72,7 +70,7 @@ class Ray{
  
         let b = 2 * this.rd.dot( oc )
         let c = oc.dot( oc ) - radius * radius
-        
+        let a = this.rd.dot(this.rd); 
         return b * b - 4 * a * c
     }
     intersectSphereComponent(center, radius){
@@ -81,6 +79,9 @@ class Ray{
             return Infinity
         }
         let sqrtDisc = Math.sqrt( disc )
+        let oc = p5.Vector.sub(this.r0, center);
+         let b = 2 * this.rd.dot( oc )
+        let a = this.rd.dot(this.rd); 
         let denom = 2 * a
         let t0 = (-b - sqrtDisc) / denom
         let t1 = (-b + sqrtDisc) / denom
@@ -215,53 +216,10 @@ class BB extends BoundingPrimitive{
 
         return [te > 0 && te < tl, this.transform.transformBase2Std( ray.eval( te ), true )]
     }
-    slabTest(ray){
-        /**
-         * 
-         * ti1 = (min_i - o_i) / d_i
-            ti2 = (max_i - o_i) / d_i
-            if (ti1 > ti2) swap(ti1, ti2)
-
-            t_enter = max over axes of ti1
-            t_exit  = min over axes of ti2
-         */
-        let corner = this.corner.sub( this.transform.pos )
-        let rcorner = this.rightCorner.sub( this.transform.pos )
-        let t1s = []
-        let t2s = []
-        // x
-        let t1 = (corner.x - ray.r0.x) / ray.rd.x 
-        let t2 = (rcorner.x - ray.r0.x) / ray.rd.x
-        if(t1 > t2) { [t1, t2] = [t2, t1] }
-        t1s.push( t1 )
-        t2s.push( t2 )
-        // y
-        t1 = (corner.y - ray.r0.y) / ray.rd.y
-        t2 = (rcorner.y - ray.r0.y) / ray.rd.y
-        if(t1 > t2) { [t1, t2] = [t2, t1] }
-        t1s.push( t1 )
-        t2s.push( t2 )
-
-        let tenter = Math.max (...t1s)
-        let texit = Math.max (...t2s )
-        return [texit >= Math.max( 0, tenter), this.transform.transformBase2Std(ray.eval( tenter ), true)]
-    }
+   
     checkHit(ray){
         let rayB = this.transformRay2Base( ray )
-        let [Px, Py] = rayB.intersectCurrentStdBase(  )
-        
         let [hasHit, P] = this.slabTest2( rayB )
-
-        DEBUG.debug( 
-            (function() {
-                fill (255, 0, 0)
-                DEBUG.vectorEllipse( this.transform.transformBase2Std( Px, true ) )
-                fill (0, 255, 0)
-                DEBUG.vectorEllipse( this.transform.transformBase2Std( Py, true ) )
-            }), this
-        )
-
-        
         return [hasHit, P]
     }
     
@@ -290,3 +248,13 @@ class BB extends BoundingPrimitive{
         pop ()
     }
 }
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        Ray,
+        BB,
+        BoundingPrimitive,
+        BSpherical
+    }
+}
+

@@ -2,7 +2,7 @@ digraph G{
     INP [label="1. input obj: Object"]
     SET1 [label="2. bb=null"]
     FOR [label="3. for item in Object.entries(obj)"]
-    SET2 [label="4. hbb=item[1 instanceof BB]"]
+    SET2 [label="4. hbb=item[1] instanceof BB"]
     IF [label="5. if hbb!=null"]
     SET3 [label="6. bb=hbb"]
     BREAK [label="7. break"]
@@ -18,6 +18,5 @@ digraph G{
     BREAK -> RET 
 
     IF -> FOR [label="false"]
-
 
 }   

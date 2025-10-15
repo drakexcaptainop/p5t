@@ -31,7 +31,7 @@ class World extends Array{
     for(let item of Object.entries(obj)){
       let hbb = item[1] instanceof BB
       if(hbb){
-        bb = hbb
+        bb = item[1]
         break
       }
     }
@@ -56,5 +56,12 @@ class HitInfo{
         this.hasHit = hasHit 
         this.P = P 
         this.obj = obj 
+    }
+}
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        HitInfo,
+        World,
     }
 }
