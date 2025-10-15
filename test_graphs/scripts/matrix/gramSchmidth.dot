@@ -29,7 +29,7 @@ digraph G {
     FOR_INN -> SET7 [label="not in range"]
     SET7 -> IF 
     IF -> SET8 [label="true"]
-    SET8 -> SET9 -> FOR_INN
+    SET8 -> SET9 -> FOR_EXT
     IF -> ELSE [label="false"]
     ELSE -> SET10 
     SET10 -> FOR_EXT

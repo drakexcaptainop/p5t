@@ -1,4 +1,6 @@
 digraph G {
    INP [label="1. input B: Matrix, j: Scalar"]
    RET [label="2. return B[:][j]"]
+
+   INP -> RET
 }

@@ -1,6 +1,6 @@
 digraph G {
     INP [label="1. input u: Array, t: Number | Array"]
-    ISS [label="2. isscalar=t instanceof Number"]
+    ISS [label="2. isscalar=typeof t == 'number'"]
     RES [label="3. result=ArrayOfZeros( )"]
     FOR [label="4. for i=0:u.Length"]
     ADD [label="5. result[i]=arr[i]+subt"]

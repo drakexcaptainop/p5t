@@ -5,7 +5,20 @@ const PROBABILITY_UTILS = {
         z: 521288629,
         c: 7654321
     },
+    randomCache: [],
+    _seed: 0,
+    _initialState: {
+        x: 123456789,
+        y: 362436000,
+        z: 521288629,
+        c: 7654321
+    },
+    resetRng(){
+        this.kissState = this._initialState
+        this.setKissSeed(this.seed)
+    },
     setKissSeed(seed){
+        this._seed = seed
         let base = seed >>> 0
         PROBABILITY_UTILS.kissState = {
             x: base || 123456789,
@@ -25,7 +38,7 @@ const PROBABILITY_UTILS = {
         let carry = ((698769069 * z + c) / 0x100000000) >>> 0
         z = t >>> 0
         c = carry
-        PROBABILITY_UTILS._kissState = { x, y, z, c }
+        PROBABILITY_UTILS.kissState = { x, y, z, c }
         let result = (x + y + z) >>> 0
         return result / 0x100000000
     },
@@ -137,5 +150,19 @@ class ClassicalDistributions{
 
     static sampleBeta(){
         
+    }
+}
+
+PROBABILITY_UTILS.setKissSeed( 0 )
+for(let i=0; i<1000; i++){
+    PROBABILITY_UTILS.randomCache.push( PROBABILITY_UTILS.kissUniform() )
+}
+PROBABILITY_UTILS.setKissSeed( 0 )
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        HMM,
+        ClassicalDistributions,
+        PROBABILITY_UTILS
     }
 }

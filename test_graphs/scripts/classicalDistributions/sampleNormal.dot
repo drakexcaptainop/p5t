@@ -21,6 +21,8 @@ digraph G{
     SET1 -> IF2 
     IF2 -> SET2 [label="true"]
     SET2 -> SET3 
+    SET5 -> WHILE2
+    SET4 -> WHILE2
     IF2 -> SET3 [label="false"]
     SET3 -> WHILE1 
     WHILE1 -> WHILE2 [label="false"]

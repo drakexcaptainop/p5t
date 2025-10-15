@@ -1,5 +1,30 @@
 digraph G {
-    A [label="input x,y,z"]
-    B [label="set this.x=x\nthis.y=y\nthis.z=z"]
-    A -> B -> End;
+    INP [label="1. input x: Number, y: Number, z:Number"]
+    IF1 [label="2. if x==undefined"]
+    SET1 [label="3. this.x=0"]
+    ELSE1 [label="4. this.x=x"]
+    IF2 [label="5. if y==undefined"]
+    SET2 [label="6. this.y=0"]
+    ELSE2 [label="7. this.y=y"]
+    IF3 [label="8. if z==undefined"]
+    SET3 [label="9. this.z=0"]
+    ELSE3 [label="10. this.z=z"]
+
+    INP -> IF1 
+    IF1 -> SET1 [label="true"]
+    IF1 -> ELSE1 [label="false"]
+
+    SET1 -> IF2 
+    ELSE1 -> IF2
+    IF2 -> SET2 [label="true"]
+    IF2 -> ELSE2 [label="false"]
+
+    SET2 -> IF3
+    ELSE2 -> IF3
+    IF3 -> SET3 [label="true"]
+    IF3 -> ELSE3 [label="false"]
+
+    SET3 -> END 
+    ELSE3 -> END
+
 }

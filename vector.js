@@ -1,8 +1,8 @@
 class Vector{
     constructor(x, y, z){
-        this.x = x 
-        this.y = y
-        this.z = z 
+        this.x = x || 0
+        this.y = y || 0
+        this.z = z || 0
     }
     asArray(){
         return [ this.x, this.y, this.z ]
@@ -20,7 +20,10 @@ class Vector{
         return this 
     }
     sub(u){
-        return this.mult(-1).add( u ).mult(-1)
+        this.x -= u.x 
+        this.y -= u.y 
+        this.z -= u.z 
+        return this
     }
     div(t){
         return this.mult( 1/t )
@@ -57,7 +60,7 @@ class Vector{
         return result
     }
     static arrayAdd(arr, t){
-        let iscalar = t instanceof Number
+        let iscalar = typeof t == "number"
         let result = new Array( arr.length ).fill(0)
         for ( let i = 0; i < arr.length; i++ ){
             let addend = iscalar ? t : t[i]
@@ -66,7 +69,7 @@ class Vector{
         return result
     }
     static arraySub(arr, t){
-        let isscalar = t instanceof Number
+        let isscalar = typeof t == "number"
         let result = new Array( arr.length ).fill(0)
         for ( let i = 0; i < arr.length; i++ ){
             let subt = isscalar ? t : t[i]
@@ -85,16 +88,16 @@ class Vector{
         }
         return sum
     }
-    static arrayNorm(arr1, arr2){
-        return Math.sqrt( Vector.arrayDot( arr1, arr2 ) )
+    static arrayNorm(arr1){
+        return Math.sqrt( Vector.arrayDot( arr1, arr1 ) )
     }
 }
 class Matrix{
     static linearCombination(B, u){
-        let z = new Vector( 0, 0, 0 )
+        let z = new Array(u.length).fill(0)
         let Bt = Matrix.baseTranspose( B )
         for(let i=0; i<B[0].length; i++){
-            z.add( p5.Vector.mult( Bt[i], u[i] ) )
+            z = Vector.arrayAdd( z, Vector.arrayMult( Bt[i], u[i] ) )
         }
         return z
     }
@@ -104,12 +107,12 @@ class Matrix{
     }
 
     static standardVectorBaseToOrthogonalBase( B, u ){
-        if( u instanceof Array ) u = u.asArray( )
+        if( u instanceof Vector ) u = u.asArray( )
         let Bt = Matrix.baseTranspose( B )
         return Matrix.linearCombination( Bt, u )        
     }
     static baseInverse(B){
-        let [L, I] = Matrix.lowerTriangularReduction( B )
+        let [L, I] = Matrix.lowerTriangularReduction( B, Matrix.eye( B.length ) )
         let [_, Bi] = Matrix.upperTriangularReduction( L, I )
         return Bi
     }
@@ -187,7 +190,7 @@ class Matrix{
     }
 
     static baseTranspose( B ){
-        let Bt = Matrix.zerosMatrix( ...Matrix.shape( B ) )
+        let Bt = Matrix.zerosMatrix( ...Matrix.shape( B ).reverse() )
         for(let j=0; j<B[0].length; j++){
             for(let i=0; i<B.length; i++){
                 Bt[j][i] = B[i][j]
@@ -307,3 +310,11 @@ const VUtils = {
     }
 }
 `
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        Matrix,
+        Vector,
+        MatrixDecomposition
+    }
+}
