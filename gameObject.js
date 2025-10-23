@@ -78,6 +78,8 @@ class RigidBody{
         this.mass = mass || GLOBALS.DefaultMass
         this.active = true
         this.maxAbsVelocity = GLOBALS.DefaultMaxAbsVelocity
+        this.acceleration = createVector()
+        this.damping = 0
     }
     massRescale(v){
         return p5.Vector.mult( v, 1/this.mass )
@@ -95,7 +97,7 @@ class RigidBody{
     }
     addForce(F){
         if(!this.active) return
-        this.velocity.add( this.massRescale( F ) )
+        this.acceleration.add( this.massRescale( F ) )
     }
 }
 // T*q = T^-1g
@@ -149,6 +151,14 @@ class Transform2d{
     }
 }
 
+class Physics2d{
+    static calculateGravityForce( P1, P2, m1, m2, G ){
+        let r12 = p5.Vector.sub(P2, P1)
+        return r12.normalize().mult( G * m1 * m2 / r12.dot(r12)  )
+    }
+}
+
+
 if (typeof module !== "undefined") {
     module.exports = {
         Transform2d,
@@ -157,3 +167,5 @@ if (typeof module !== "undefined") {
         VUtils
     }
 }
+
+

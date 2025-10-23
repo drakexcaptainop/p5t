@@ -27,5 +27,8 @@
       "text",
       "lcov"
     ]
+  },
+  "dependencies": {
+    "p5js": "^1.2.18"
   }
 }
