@@ -1,34 +1,4 @@
-const DEBUG = {
-    Debug: true,
-    EllipseSize: 10,
-    beginDebug(){
-        if(this.Debug) push()
-    },
-    endDebug(){
-        if(this.Debug) pop()
-    },
-    debug(f, ctx){
-        if(!this.Debug) return
-        this.beginDebug()
-        if(ctx){ f = f.bind(ctx) }
-        f()
-        this.endDebug()
-    },
-    vectorEllipse( vec, size ) {
-        ellipse( vec.x, vec.y, size || this.EllipseSize )
-    },
-    segment( p1, p2, boundPoints ){
-        line ( p1.x, p1.y, p2.x, p2.y )
-        if(boundPoints){
-            ellipse( p1.x, p1.y, this.EllipseSize )
-            ellipse( p2.x, p2.y, this.EllipseSize )
-        }
-    }
-}
-const PRIMITIVE_GLOBALS = {
-    Eps: 1e-6 ,
-    
-}
+
 class Ray{
     constructor(origin, direction){
         this.r0 = origin

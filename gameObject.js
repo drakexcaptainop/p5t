@@ -1,36 +1,3 @@
-const GLOBALS = {
-    DefaultGravity: .2,
-    DefaultMass: 1,
-    DefaultGOSize: 50,
-    DefaultBaseDrawMag: 50,
-    DefaultMaxAbsVelocity: 4
-}
-
-const VUtils = {
-    ortho2: function ( u ) {
-        return createVector( -u.y, u.x )
-    },
-    linear: function (vecs, alphas){
-        let z = createVector()
-        for(let i=0; i<vecs.length; i++){
-            z.add( p5.Vector.mult( vecs[i], alphas[i] ) )
-        }
-        return z
-    },
-    base2std: function (b1, b2, alpha){
-        return VUtils.linear( [b1, b2], [alpha.x, alpha.y] )
-    },
-    std2orthobase: function(b1, b2, alpha){
-        return createVector( b1.dot(alpha), b2.dot(alpha) )
-    },
-    rotate: function(u, beta) {
-        return VUtils.linear( [ createVector(cos(beta), sin(beta)), createVector(-sin(beta), cos(beta)) ],
-    [u.x, u.y] )
-    },
-    clamp( v, u, l ) {
-        return createVector( constrain( v.x, u, l ), constrain( v.y, u, l ) )
-    }
-}
 
 class GObject{
     constructor(pos){
@@ -67,6 +34,10 @@ class GObject{
         this.rigidBody.active = true 
         return this
     }
+
+    onForceRecieved(F){
+        this.rigidBody.addForce(F)
+    }
 }
 
 
@@ -89,15 +60,22 @@ class RigidBody{
     }
     update(){
         if(!this.active) return
-        this.velocity.add( this.massRescale( 
-            this.gameObject.transform.std2Base( this.gravity )
-        ) )
+        this.addForce( this.gravity )
+
+        this.velocity.add(this.acceleration)
         this.constrainVelocity(  )
         this.gameObject.transform.translate( this.velocity )
+        
+        this.velocity.mult( this.damping )
+        this.resetAcceleration()
+    }
+    resetAcceleration(){
+        this.acceleration.mult(0)
     }
     addForce(F){
         if(!this.active) return
-        this.acceleration.add( this.massRescale( F ) )
+        let Q = this.gameObject.transform.transformBase2Std( F, false ) 
+        this.acceleration.add( this.massRescale( Q ) )
     }
 }
 // T*q = T^-1g
@@ -151,12 +129,26 @@ class Transform2d{
     }
 }
 
-class Physics2d{
+class Physics2dForces{
     static calculateGravityForce( P1, P2, m1, m2, G ){
         let r12 = p5.Vector.sub(P2, P1)
-        return r12.normalize().mult( G * m1 * m2 / r12.dot(r12)  )
+        let d = r12.copy().dot(r12)
+        return r12.normalize().mult( G * m1 * m2 / d  )
+    }
+
+    static calculateDragForce( velocity, dragCoeff1, dragCoeff2 ){
+        let speed = velocity.mag()
+        let vhat = velocity.copy().normalize()
+        return -vhat.mult( dragCoeff1 * speed + dragCoeff2 * speed * speed )
+    }
+
+    static calculateSpringForce(k, p0, pf){
+        let dP = p5.Vector.sub( pf, p0 )
+        let dPh = dP.copy().normalize()
+        return p5.Vector.mult( dPh, -k * dP.mag() )
     }
 }
+
 
 
 if (typeof module !== "undefined") {
@@ -164,7 +156,8 @@ if (typeof module !== "undefined") {
         Transform2d,
         RigidBody,
         GObject,
-        VUtils
+        VUtils,
+        Physics2dForces
     }
 }
 
