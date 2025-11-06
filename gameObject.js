@@ -37,6 +37,7 @@ class GObject{
         this.transform = new Transform2d( pos )
         this.rigidBody =  new RigidBody( this )
     }
+
     drawInTransform(){
         push ()
         translate (this.transform.pos)
@@ -71,7 +72,7 @@ class GObject{
 
 
 class RigidBody{
-    constructor( gameObject, mass ){
+    constructor( gameObject, mass, damping ){
         this.velocity = createVector()
         this.gravity = createVector(0, GLOBALS.DefaultGravity)
         this.gameObject = gameObject
@@ -79,7 +80,7 @@ class RigidBody{
         this.active = true
         this.maxAbsVelocity = GLOBALS.DefaultMaxAbsVelocity
         this.acceleration = createVector()
-        this.damping = 0
+        this.damping = damping || .99
     }
     massRescale(v){
         return p5.Vector.mult( v, 1/this.mass )
@@ -89,11 +90,11 @@ class RigidBody{
     }
     update(){
         if(!this.active) return
-        this.velocity.add( this.massRescale( 
-            this.gameObject.transform.std2Base( this.gravity )
-        ) )
+        this.velocity.add( this.acceleration )
         this.constrainVelocity(  )
+        this.velocity.mult( this.damping )
         this.gameObject.transform.translate( this.velocity )
+        this.acceleration = createVector(0)
     }
     addForce(F){
         if(!this.active) return
