@@ -29,6 +29,7 @@ const PROBABILITY_UTILS = {
         return PROBABILITY_UTILS
     },
     kissUniform(){
+        return Math.random()
         let { x, y, z, c } = PROBABILITY_UTILS.kissState
         x = (69069 * x + 12345) >>> 0
         y ^= y << 13

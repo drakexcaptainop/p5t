@@ -27,6 +27,10 @@ const DEBUG = {
     drawVector( p0, d, t ){
         t ||= 1
         line( p0.x, p0.y, p0.x + d.x * t, p0.y + d.y * t )
+    },
+    log(...data){
+        if(!this.Debug) return
+        console.log(...data  )
     }
 }
 const PRIMITIVE_GLOBALS = {

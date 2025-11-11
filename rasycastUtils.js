@@ -11,7 +11,7 @@ class World extends Array{
     let ibb = null
     let hp = null
     for(let obj of this){
-        let bb = this.hasBB( obj  )
+        let bb = obj.getBoundingBox()
         if(bb){
             let [hasHit, P] = bb.checkHit( ray )
             if(!hasHit) continue

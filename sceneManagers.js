@@ -46,16 +46,33 @@ class Physics2dSceneManager extends BaseSceneManager{
         this.G = G || GLOBALS.GravitationalConstant
     }
 
+    calcualteGravityForce(objA, objB){
+        return Physics2dForces.calculateGravityForce( objA.transform.pos, objB.transform.pos, objA.rigidBody.mass, objB.rigidBody.mass, this.G )
+    }
+
+    checkBBoxInteraction(){
+        
+    }
+
+    checkSphereInteraction(){
+
+    }
+
+    calculateAndaddGravityForces(objA, objB){
+        let F = this.calcualteGravityForce( objA, objB )
+        objA.rigidBody.addForce( F )
+        objB.rigidBody.addForce( p5.Vector.mult( F, -1 ) )
+        return objA, objB, F
+    }
     updateGravityForces(){
         for(let i=0;i<this.length;i++){
             for(let j=i+1;j<this.length;j++){
                 let objA = this[i]
                 let objB = this[j]
-                let F = Physics2dForces.calculateGravityForce( objA.transform.pos, objB.transform.pos, objA.rigidBody.mass, objB.rigidBody.mass, this.G )
-                objA.rigidBody.addForce( F )
+                let F = null
+                [objA, objB, F] = this.calculateAndaddGravityForces( objA, objB )
                 DEBUG.drawVector( objA.transform.pos, F, 100)
                 DEBUG.drawVector( objB.transform.pos, p5.Vector.mult( F, -1 ), 100)
-                objB.rigidBody.addForce( p5.Vector.mult( F, -1 ) )
             }
         }
     }

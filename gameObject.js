@@ -3,7 +3,13 @@ class GObject{
     constructor(pos){
         this.transform = new Transform2d( pos )
         this.rigidBody =  new RigidBody( this )
+        this.tag = null
     }
+
+    getBoundingBox(){
+        return null
+    }
+    
     drawInTransform(){
         push ()
         translate (this.transform.pos)
@@ -92,6 +98,11 @@ class Transform2d{
     computeBase(fwd){
         this.fwd = fwd
         this.right = VUtils.ortho2( fwd )
+    }
+
+    setAngle(alpha){
+        let fwd = createVector(cos(alpha), sin(alpha))
+        this.computeBase( fwd )
     }
     computeRot(){
         this.zrot = this.right.heading()
