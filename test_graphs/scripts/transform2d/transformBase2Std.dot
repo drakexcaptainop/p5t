@@ -1,0 +1,13 @@
+digraph G{
+    INP [label="1. input useStdOrigin: bool, P: Vector"]
+    SET [label="2. q = base2std( this.right, this.fwd, P )"]
+    IF [label="3. if useStdOrigin"]
+    SET1 [label="4. q.add(this.pos)"]
+    ELSE [label="5. q"]
+
+    INP -> SET -> IF 
+    IF -> SET1 [label="true"]
+    SET1 -> END 
+    IF -> ELSE [label="false"]
+    ELSE -> END
+}

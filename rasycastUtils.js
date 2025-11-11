@@ -11,7 +11,7 @@ class World extends Array{
     let ibb = null
     let hp = null
     for(let obj of this){
-        let bb = this.hasBB( obj  )
+        let bb = obj.getBoundingBox()
         if(bb){
             let [hasHit, P] = bb.checkHit( ray )
             if(!hasHit) continue
@@ -31,7 +31,7 @@ class World extends Array{
     for(let item of Object.entries(obj)){
       let hbb = item[1] instanceof BB
       if(hbb){
-        bb = hbb
+        bb = item[1]
         break
       }
     }
@@ -56,5 +56,12 @@ class HitInfo{
         this.hasHit = hasHit 
         this.P = P 
         this.obj = obj 
+    }
+}
+
+if (typeof module !== "undefined") {
+    module.exports = {
+        HitInfo,
+        World,
     }
 }

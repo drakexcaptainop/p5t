@@ -1,6 +1,6 @@
 digraph G {
-   INP [label="1. B: Matrix, u: Vector"]
-   SET1 [label="2. z = Vector(0)"]
+   INP [label="1. B: Matrix, u: Array"]
+   SET1 [label="2. z = Array(0)"]
    SET2 [label="3. Bt = Matrix.transpose( B )"]
    FOR [label="4. for i=0..B[0].Length"]
    MULT [label="5. zt = Vector.mult( B[i], u[i] )"]

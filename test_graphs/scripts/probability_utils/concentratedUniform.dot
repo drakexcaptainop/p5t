@@ -1,0 +1,15 @@
+digraph G{
+   INP [label="1. N: Number, i: Number, Pr: Number"]
+   IF [label="2. if Pr == undefined"]
+   SET1 [label="3. Pr = Pr"]
+   ELSE [label="4. Pr = 0.85"]
+   SET2 [label="5. rcd=(1-Pr)/(N-1)"]
+   RET [label="6. return normalizePmf( uniform((_, j) -> j==i ? Pr : rcd ) )"]
+
+   INP -> IF
+   IF -> SET1 [label="true"]
+   IF -> ELSE [label="FALSE"]
+   ELSE -> SET2
+   SET1 -> SET2 
+   SET2 -> RET 
+}

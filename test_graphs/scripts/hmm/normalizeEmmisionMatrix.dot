@@ -6,4 +6,5 @@ digraph G{
     INP -> FOR 
     FOR -> SET1 [label="in range"]
     FOR -> END [label="not in range"]
+    SET1 -> FOR
 }

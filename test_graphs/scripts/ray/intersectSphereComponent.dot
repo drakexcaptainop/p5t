@@ -1,0 +1,32 @@
+digraph G{
+    INP [label="1. input center: number, radius: number"]
+    SET1 [label="2. disc=getSphereDiscriminant(center, radius)"]
+    IF1 [label="3. if disc < 0"]
+    RET1 [label="4. return Infinity"]
+    SET2 [label="5. set sqrtDisc, demon, t0, t1"]
+    IF2 [label="6. if t0 > t1"]
+    SET3 [label="7. [t0, t1]=[t1, t0]"]
+    SET4 [label="8. set eps, tclosest=Infinity"]
+    IF3 [label="9. if t0>=eps"]
+    SET5 [label="10. tclosest=t0"]
+    ELSEIF [label="11. t1 >= eps"]
+    SET6 [label="12. tclosest=t1"]
+    RET2 [label="13. return tclosest"]
+
+    INP -> SET1 -> IF1 
+    IF1 -> RET1 [label="true"]
+    RET1 -> END 
+
+    IF1 -> SET2 [label="false"]
+    SET2 -> IF2
+    IF2 -> SET3 [label="true"]
+    SET3 -> SET4 
+    IF2 -> SET4 [label="false"] 
+    SET4 -> IF3 
+    IF3 -> SET5 [label="true"]
+    IF3 -> ELSEIF [label="false"]
+    SET5 -> RET2
+    ELSEIF -> SET6 [label="true"]
+    SET6 -> RET2 -> END
+
+}

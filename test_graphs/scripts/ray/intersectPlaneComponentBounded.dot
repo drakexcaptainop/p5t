@@ -1,0 +1,13 @@
+digraph G{
+    INP [label="1. input w: Vector, x0: Number"]
+    SET1 [label="2. t=intersectComponent(w, x0)"]
+    IF [label="3. if t<0"]
+    RET1 [label="4. return Infinity"]
+    RET2 [label="5. return t"]
+
+    INP -> SET1 -> IF 
+    IF -> RET1 [label="true"]
+    IF -> RET2 [label="false"]
+    RET1 -> END 
+    RET2 -> END
+}

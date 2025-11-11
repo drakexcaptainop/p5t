@@ -1,6 +1,6 @@
 digraph G{
     INP [label="1. input T: Number, Z_0: Number"]
-    SET1 [label="2. Z_t=Z_0\nobsPath=[]\nlatentPath=[]"]
+    SET1 [label="2. Z_t=Z_0\nobsPath=[]\nlatentPath=[Z_0]"]
     FOR [label="3. for i=1..(T+1)"]
     SET2 [label="4. Z_t=this.sampleState(Z_t)"]
     SET3 [label="5. X_t=this.sampleEmission(Z_t)"]
