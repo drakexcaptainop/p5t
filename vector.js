@@ -189,6 +189,12 @@ class Matrix{
     static column(B, j){
         return B.map(row => row[j])
     }
+
+    static hstack(A, b){
+        let At = Matrix.baseTranspose( A )
+        At.push( b )
+        return Matrix.baseTranspose( At )
+    }
     static setColumn(B, j, column){
         for(let i = 0; i < B.length; i++) B[i][j] = column[i]
         return B
