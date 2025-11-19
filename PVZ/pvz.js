@@ -6,14 +6,18 @@ function mousePressed(){
 let grid 
 function setup() {
     createCanvas(innerWidth, innerHeight)
-    grid = new Grid( 10, 10 )
+    grid = Grid.initialize(10, 10)
+    ScoreUI.initialize()
+    PlantSelectionUI.initialize()
 }
 
 function draw(){
     background( 255 )
     grid.draw()
     grid.updateHover()
-    grid.updateUI()
     grid.updateCells()
     grid.updateZombs()
+    grid.updateMoney()
+    ScoreUI.instance.draw()
+    PlantSelectionUI.instance.draw()
 }

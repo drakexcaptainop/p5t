@@ -7,6 +7,9 @@ const DEBUG = {
     endDebug(){
         if(this.Debug) pop()
     },
+    breakpoint(){
+        debugger
+    },
     debug(f, ctx){
         if(!this.Debug) return
         this.beginDebug()

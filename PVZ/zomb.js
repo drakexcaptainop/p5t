@@ -4,9 +4,9 @@ class ZombManager extends Array{
      * 
      * @param {Grid} grid 
      */
-    constructor(grid){
+    constructor(){
         super()
-        this.grid = grid
+        this.grid = Grid.instance
         this.spawner = new ZombSpawner(this, 1)
         this.removeQuery = []
     }

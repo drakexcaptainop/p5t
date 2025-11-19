@@ -1,4 +1,44 @@
 
+class ScoreUI extends BaseSingleton{
+    constructor(){
+        super()
+        this.grid = Grid.instance
+        this.currentScore = 0
+    }
+    get pos(){
+        return Grid.instance.indexToCenterScreenPoint( 0, 0 )
+    }
+    draw(){
+        let p = this.pos 
+        text (`Current: ${this.currentScore}`, p.x, p.y)
+    }
+    decreaseScore(){
+        this.currentScore -= 50
+    }
+    increaseScore(){
+        this.currentScore += 50
+    }
+    update(){
+        this.currentScore += 50
+    }
+}
+
+class PlantSelectionUI extends BaseSingleton{
+    constructor(availablePlants){
+        super()
+        this.availablePlants = availablePlants
+        this.plantTexture = loadBitmap ()
+        debugger
+        this.grid = Grid.instance //soy gei
+    }
+    draw(){
+        for(let i=0; i<this.grid.cols; i++){
+            te
+        }
+    }
+
+}
+
 class UI{
     constructor(grid){
         this.cols = grid.cols

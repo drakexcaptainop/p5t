@@ -1,19 +1,31 @@
 class Grid extends Array{
-    static instance = null
+    static _instance = null
     constructor( rows, cols ){
         super( rows )
-        if(Grid.instance){
-            throw new Error("instance already created")
-        }
         this.rows = rows 
         this.cols = cols 
         this.cellWidth = width / this.cols
         this.cellHeight = height / this.rows
         this.fill(0)
-        this._initializeGrid()
         this.currentMousePos = [0, 0]
-        this.zombManager = new ZombManager(this)
-        Grid.instance = this
+    }
+    static get instance(){
+        if (this._instance == null){
+            return this.initialize(10, 10)
+        }
+        return this._instance
+    }
+
+    static initialize(rows, cols){
+        let instance = new this(rows, cols)
+        this._instance = instance
+        instance._initializeGrid()._initializeManagers()
+        return this._instance
+    }
+    _initializeManagers(){
+        this.zombManager = new ZombManager()
+        this.moneyManager = new MoneyManager()
+        return this
     }
     _initializeGrid(){
         for(let i=0; i<this.cols; i++){
@@ -23,13 +35,20 @@ class Grid extends Array{
         }
         return this
     }
-
-    draw(){
-        this.drawCells()
-        this.zombManager.draw()
+    indexToCenterScreenPoint(row, col){
+        let x = this.cellWidth * (col + 1/2)
+        let y = this.cellHeight * (row + 1/2)
+        return createVector(x, y)
     }
 
-    drawCells(){
+    draw(){
+        this.drawGrid()
+        this.drawMouseHover()
+        this.drawCells()
+        this.zombManager.draw()
+        this.moneyManager.draw()
+    }
+    drawGrid(){
         let maxAxis = Math.max( this.rows, this.cols )
         for(let i=0;  i<maxAxis; i++){
             let cx = this.cellWidth * i 
@@ -41,6 +60,9 @@ class Grid extends Array{
                 line (cx, 0, cx, height)
             }
         }
+    }
+    drawCells(){
+        
         for(let i=0; i<this.rows; i++){
             for(let j=0; j<this.cols; j++){
                 let cell = this[i][j]
@@ -57,6 +79,7 @@ class Grid extends Array{
             }
         }
         this.zombManager.clear()
+        this.moneyManager.clear()
     }
 
     updateHover(){
@@ -73,16 +96,22 @@ class Grid extends Array{
     }
     onClick(){
         let [row, col] = this.mouseGridPosition
-        if(col >= this.cols || row >= this.cols) return
+        if(col >= this.cols || row >= this.cols || this.row == 0) return
         let cell = this[row][col]
-        cell.attachDrawable( Plant )
+        if(ScoreUI.instance.currentScore >= 50){
+            ScoreUI.instance.decreaseScore()
+            cell.attachDrawable( Plant )
+        }
     }
 
     updateZombs(){
         this.zombManager.update()
     }
 
-    updateUI(){
+    updateMoney(){
+        this.moneyManager.update()
+    }
+    drawMouseHover(){
         let [row, col] = this.mouseGridPosition
         if(col >= this.cols || row >= this.cols) return
         stroke( 255, 0, 0 )
@@ -104,8 +133,8 @@ class Cell extends GObject{
         this.timeToClear = 10
         this.t = 0
     }
-    attachDrawable(obj){
-        this.drawable = new obj( 
+    attachDrawable(objType){
+        this.drawable = new objType( 
             createVector( this.transform.pos.x, this.transform.pos.y), this.width * .4, this.height * .4 )
     }
 
